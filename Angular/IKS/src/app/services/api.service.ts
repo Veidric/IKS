@@ -12,7 +12,10 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   request(method: string, route: string, body?: any): Observable<any> {
+    
     const url = `${this.BASE_URL}/${route}`;
+    console.log(url)
     return this.http.request(method, url, { body });
+    
   }
 }

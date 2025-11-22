@@ -11,10 +11,15 @@ export class AuthService {
 
   constructor(private api: ApiService) {}
 
+  loginUser(data: any): Observable<any> {
+    return this.api.request('POST', 'auth/login', data);
+  }
+
   registerUser(data: any): Observable<any> {
     return this.api.request('POST', 'auth/register', data);
   }
-
+  
+/*
   loginUser(data: any): Observable<any> {
     return this.api.request('POST', 'auth/login', data);
   }
@@ -35,5 +40,5 @@ export class AuthService {
     if (this.currentUser) {
       this.currentUser.Username = newName;
     }
-  }
+  }*/
 }

@@ -23,6 +23,7 @@ module.exports = function(express, pool, jwt, secret) {
           });
         } catch(e){
             res.status(400).json({message: e.message});
+            console.log(e.message)
         }
     });
   
@@ -43,7 +44,7 @@ module.exports = function(express, pool, jwt, secret) {
             }
           }
           catch (e) {
-            res.status(400).json({message: "Bad request"});
+            res.status(400).json({message: e.message});
           }
     });
 
