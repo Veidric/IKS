@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  private BASE_URL = 'http://localhost:3000/api'; // <- change to your backend URL
+  private BASE_URL = 'http://localhost:8080/api'; // <- change to your backend URL
 
   constructor(private http: HttpClient) {}
 
