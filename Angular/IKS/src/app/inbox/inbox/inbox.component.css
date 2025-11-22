@@ -1,0 +1,17 @@
+/* src/app/profile/inbox/inbox.component.scss */
+.section {
+  padding: 1em;
+  margin-bottom: 0.5em;
+  border-radius: 8px;
+  background: var(--card-bg);
+}
+
+.postLink {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.chat-row:hover {
+  background: rgba(0,0,0,0.03);
+}
