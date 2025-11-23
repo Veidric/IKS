@@ -66,7 +66,7 @@ export class CommentsComponent implements OnInit {
       next: () => {
         this.comments.push({
           id: user.id,
-          Username: user.Username,
+          Username: user.username,
           Content: content
         });
 

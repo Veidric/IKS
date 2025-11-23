@@ -37,6 +37,8 @@ export class UserInfoComponent implements OnInit {
   isLoggedUser = false;
   loggedUserId = 0;
 
+  
+
   constructor(
     private auth: AuthService,
     private profileService: ProfileService,
@@ -46,8 +48,11 @@ export class UserInfoComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.loggedUserId = this.auth.user()?.id;
+  async ngOnInit() {
+
+
+    this.loggedUserId = await this.auth.user().id;
+    console.log(this.user)
     this.isLoggedUser = this.loggedUserId === this.user.id;
 
     this.followingStatus = this.followers.some(f => f.id === this.loggedUserId);

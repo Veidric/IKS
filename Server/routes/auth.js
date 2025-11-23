@@ -37,7 +37,10 @@ module.exports = function(express, pool, jwt, secret) {
             }, secret, {
                 expiresIn:3600
             });
-            res.status(200).json({token:token, user:rows[0]});
+            res.status(200).json({token:token, user: {
+              id:rows[0].id,
+              username:rows[0].Username
+            }});
             }
             else {
                 res.status(401).json({message: 'UNAUTHORIZED'});

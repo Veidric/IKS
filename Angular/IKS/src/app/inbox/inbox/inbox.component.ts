@@ -37,7 +37,7 @@ export class InboxComponent implements OnInit {
   ngOnInit(): void {
   const user = this.auth.user() || {};
   this.userId = user.id;
-  this.username = user.Username;
+  this.username = user.username;
 
   this.chatService.getChats(this.userId).subscribe({
     next: (res: any) => {

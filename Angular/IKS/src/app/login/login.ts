@@ -31,7 +31,7 @@ export class Login implements OnInit {
     let response = await this.authService.loginUser(obj).subscribe(jao => {
       localStorage.setItem('user', JSON.stringify(jao['user']))
       localStorage.setItem('token', JSON.stringify(jao['token']));
-      this.router.navigate([''])
+      this.router.navigate(['/profile'])
     })
 
     /*for (let i=0; i<this.users.length; i++){

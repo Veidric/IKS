@@ -1,16 +1,14 @@
-<div *ngIf="loading">
-  <app-loading-spinner></app-loading-spinner>
-</div>
-
-<div *ngIf="!loading">
+<div>
   <app-user-info
     [user]="user"
     [followers]="followers"
     [following]="following">
   </app-user-info>
 
-  <app-posts-list
+    <app-posts-list
     [route]="'profilePosts'"
     [userId]="user.id">
   </app-posts-list>
+
+
 </div>
