@@ -1,0 +1,36 @@
+<div class="section post">
+  <div class="flexHorizontal postTopBar">
+    <div class="postTopBarLeft">
+      <a [routerLink]="['/profile', post.UserID]" class="postLink">{{ post.Username }}</a>
+      <div [style.margin-left]="post.Username ? '0.5em' : null">{{ post.Visibility }}</div>
+    </div>
+
+    <div class="postDateDiv">
+      <div class="postDate">{{ formatDatePost(post.CreatedAt) }}</div>
+    </div>
+  </div>
+
+  <div class="postContent">{{ post.Content }}</div>
+
+  <div class="bottomBar flexHorizontal">
+    <div class="ratingButtons">
+      <div class="postIcon transition" (click)="pressLike()">
+        <ng-container *ngIf="userPostRating === 1; else outlineLike">👍</ng-container>
+        <ng-template #outlineLike>👍🏻</ng-template>
+      </div>
+      <div>{{ postRating }}</div>
+
+      <div class="postIcon transition" (click)="pressDislike()">
+        <ng-container *ngIf="userPostRating === -1; else outlineDislike">👎</ng-container>
+        <ng-template #outlineDislike>👎🏻</ng-template>
+      </div>
+    </div>
+
+    <div>
+      <app-comments
+        [initialNumberOfComments]="post.Comments"
+        [postId]="post.PostID">
+      </app-comments>
+    </div>
+  </div>
+</div>

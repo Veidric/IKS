@@ -1,0 +1,63 @@
+<ng-container *ngIf="loadingPosts || loadingRatings; else loaded">
+  <app-loading-spinner />
+</ng-container>
+
+<ng-template #loaded>
+  
+  <div class="frontPageBar">
+
+    <!-- NEW POST BUTTON -->
+    <ng-container *ngIf="canAddPost">
+      <app-post-form type="new"></app-post-form>
+    </ng-container>
+
+    <div>
+      <ng-container *ngIf="route !== 'profilePosts'">
+        <button
+          (click)="setFilter('objave')"
+          [class.buttonSelected]="filter === 'objave'"
+        >
+          Public
+        </button>
+
+        <button
+          style="margin-left: .5em"
+          (click)="setFilter('objavepratitelja')"
+          [class.buttonSelected]="filter === 'objavepratitelja'"
+        >
+          Following
+        </button>
+
+        <div class="divider"></div>
+      </ng-container>
+
+      <button
+        (click)="setSortKey('Rating')"
+        [class.buttonSelected]="sortKey === 'Rating'"
+      >
+        Popular
+      </button>
+
+      <button
+        style="margin-left: .5em"
+        (click)="setSortKey('DateOfPosting')"
+        [class.buttonSelected]="sortKey === 'DateOfPosting'"
+      >
+        New
+      </button>
+    </div>
+  </div>
+
+  <!-- POSTS -->
+  <ng-container *ngFor="let post of posts">
+    <ng-container *ngIf="!( !canAddPost && post.Visibility === 'private' )">
+
+      <app-post 
+        [post]="post"
+        [rating]="getRatingFor(post.PostID)"
+      />
+
+    </ng-container>
+  </ng-container>
+
+</ng-template>

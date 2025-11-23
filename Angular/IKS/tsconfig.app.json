@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/shared/format-date-post.ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

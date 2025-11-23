@@ -1,0 +1,12 @@
+<div class="modal">
+  <h3>{{ data.title }}</h3>
+
+  <div *ngFor="let user of data.list" class="userDiv">
+    <div class="postLink" (click)="visitProfile(user.id)">
+      {{ user.Username }}
+    </div>
+    <div class="secondary">
+      {{ user.Name }} {{ user.Surname }}
+    </div>
+  </div>
+</div>

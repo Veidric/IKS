@@ -9,7 +9,7 @@ export class ApiService {
 
   private BASE_URL = 'http://localhost:8080/api'; // <- change to your backend URL
 
-  constructor(private http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   request(method: string, route: string, body?: any): Observable<any> {
     

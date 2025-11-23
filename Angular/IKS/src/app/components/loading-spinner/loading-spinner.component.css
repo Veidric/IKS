@@ -1,0 +1,19 @@
+.spinner-wrapper {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-icon {
+  color: var(--primary-color);
+  font-size: 3em;
+  animation: spin 1s ease infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}

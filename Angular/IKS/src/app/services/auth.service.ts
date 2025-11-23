@@ -17,12 +17,7 @@ export class AuthService {
 
   registerUser(data: any): Observable<any> {
     return this.api.request('POST', 'auth/register', data);
-  }
-  
-/*
-  loginUser(data: any): Observable<any> {
-    return this.api.request('POST', 'auth/login', data);
-  }
+  }  
 
   editProfile(data: any): Observable<any> {
     return this.api.request('PUT', 'editProfile', data);
@@ -40,5 +35,5 @@ export class AuthService {
     if (this.currentUser) {
       this.currentUser.Username = newName;
     }
-  }*/
+  }
 }

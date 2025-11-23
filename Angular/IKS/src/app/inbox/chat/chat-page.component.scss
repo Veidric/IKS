@@ -1,0 +1,44 @@
+/* src/app/profile/chat-page/chat-page.component.scss */
+.username {
+  font-size: 1.5em;
+  margin: 0.5em 0;
+  cursor: pointer;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 87vh;
+}
+
+.chat ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 1em;
+  padding: 0.5em;
+}
+
+.message {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.6em;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.messageSelf {
+  background-color: var(--primary-color-trans);
+  margin-left: auto;
+}
+
+.chatBottom {
+  padding: 0.6em 0;
+}
