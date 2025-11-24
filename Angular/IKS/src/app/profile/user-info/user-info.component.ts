@@ -7,8 +7,20 @@ import { UsersListModalComponent } from '../users-list-modal/users-list-modal.co
 import { FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-user-info',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatIconModule
+  ],
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss']
 })
@@ -25,6 +37,8 @@ export class UserInfoComponent implements OnInit {
   isLoggedUser = false;
   loggedUserId = 0;
 
+  
+
   constructor(
     private auth: AuthService,
     private profileService: ProfileService,
@@ -34,8 +48,11 @@ export class UserInfoComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.loggedUserId = this.auth.user()?.id;
+  async ngOnInit() {
+
+
+    this.loggedUserId = await this.auth.user().id;
+    console.log(this.user)
     this.isLoggedUser = this.loggedUserId === this.user.id;
 
     this.followingStatus = this.followers.some(f => f.id === this.loggedUserId);

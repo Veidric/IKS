@@ -2,10 +2,16 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
+import { CommonModule } from '@angular/common';
+
 @Component({
-  selector: 'app-users-list-modal',
+  selector: 'app-user-modal',
+  standalone: true,
+  imports: [
+    CommonModule
+  ],
   templateUrl: './users-list-modal.component.html',
-  styleUrls: ['./users-list-modal.component.scss']
+  styleUrls: ['./users-list-modal.scss']
 })
 export class UsersListModalComponent {
 

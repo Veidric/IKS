@@ -8,8 +8,24 @@ import { formatDateChat } from '../../shared/format-date-chat';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { HorizontalDividerComponent } from '../../components/horizontal-divider/horizontal-divider.component';
+import { LoadingSpinnerComponent } from '../../components/loading-spinner/loading-spinner.component';
+
 @Component({
   selector: 'app-chat-page',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    HorizontalDividerComponent,
+    LoadingSpinnerComponent
+  ],
   templateUrl: './chat-page.component.html',
   styleUrls: ['./chat-page.component.scss']
 })
@@ -28,7 +44,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private chatService: ChatService,
-    private auth: AuthService,
+    public auth: AuthService,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
