@@ -1,0 +1,15 @@
+<div>
+  <h1>Log In</h1>
+  <div>
+    Username:<br />
+    <input type="text" [(ngModel)]="tmpusr" /><br />
+    Password:<br />
+    <input type="password" [(ngModel)]="tmppass" />
+  </div>
+  <span id="errorMessage">{{ errorMessage }}</span
+  ><br />
+
+  <button (click)="login()" class="login">Log In</button>
+  <app-horizontal-divider></app-horizontal-divider>
+  <button [routerLink]="['/auth/register']">Register</button>
+</div>

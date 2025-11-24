@@ -1,0 +1,36 @@
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 3px solid var(--primary-color);
+  margin-top: 2em;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  width: 100%;
+  font-size: 2em;
+  line-height: 2em;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: var(--transition);
+}
+a:hover {
+  cursor: pointer;
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  transition: var(--transition);
+}
+.icon {
+  font-size: 0.8em;
+  margin-right: 0.5em;
+}
+
+.activePage {
+  border-bottom-color: var(--primary-color);
+}

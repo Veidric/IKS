@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { PostsService } from '../services/posts.service';
-import { User } from '../shared/Klase/user';
+import { User } from '../shared/classes/user';
 import { RouterModule } from '@angular/router';
 import { ProfileService } from '../services/profile.service';
 import { forkJoin } from 'rxjs';
@@ -10,28 +10,26 @@ import { th } from 'date-fns/locale';
 
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-
 @Injectable({
-providedIn: 'root'
-
+  providedIn: 'root',
 })
 export class PostsResolver implements Resolve<any> {
-    curUser: User = new User();
-    loading = true;
-    user: User = new User();
-    followers: any[] = [];
-    following: any[] = [];
+  curUser: User = new User();
+  loading = true;
+  user: User = new User();
+  followers: any[] = [];
+  following: any[] = [];
 
-    constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot   ): Observable<any> {
-        //@ts-ignore
-        this.curUser = JSON.parse(localStorage.getItem('user'))
-        let id = this.curUser.id
-        return forkJoin({
-            profile: this.profileService.getProfile(id), 
-            followers: this.profileService.getFollowers(id), 
-            following: this.profileService.getFollowing(id)
-        }) 
-    }
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    //@ts-ignore
+    this.curUser = JSON.parse(localStorage.getItem('user'));
+    let id = this.curUser.id;
+    return forkJoin({
+      profile: this.profileService.getProfile(id),
+      followers: this.profileService.getFollowers(id),
+      following: this.profileService.getFollowing(id),
+    });
+  }
 }

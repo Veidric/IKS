@@ -4,26 +4,17 @@ import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { PostsService } from '../../../services/posts.service';
 import { AuthService } from '../../../services/auth.service';
 
-import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { PostFormComponent } from '../post-form/post-form.component';
 import { PostComponent } from '../post/post.component';
 
 @Component({
   selector: 'app-posts-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    NgIf,
-    NgFor,
-    LoadingSpinnerComponent,
-    PostFormComponent,
-    PostComponent
-  ],
+  imports: [CommonModule, NgIf, NgFor, PostFormComponent, PostComponent],
   templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  styleUrls: ['./post-list.component.css'],
 })
 export class PostsListComponent implements OnInit {
-
   @Input() route!: string;
   @Input() userId!: number;
 
@@ -39,10 +30,7 @@ export class PostsListComponent implements OnInit {
   currentUser: any;
   canAddPost = false;
 
-  constructor(
-    private postsService: PostsService,
-    private auth: AuthService
-  ) {}
+  constructor(private postsService: PostsService, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.currentUser = this.auth.user();
@@ -62,7 +50,7 @@ export class PostsListComponent implements OnInit {
         this.sortPosts();
         this.loadingPosts = false;
       },
-      error: () => this.loadingPosts = false
+      error: () => (this.loadingPosts = false),
     });
   }
 
@@ -74,12 +62,12 @@ export class PostsListComponent implements OnInit {
         this.ratings = res || [];
         this.loadingRatings = false;
       },
-      error: () => this.loadingRatings = false
+      error: () => (this.loadingRatings = false),
     });
   }
 
   getRatingFor(postId: number) {
-    return this.ratings?.find(r => r.idPost === postId);
+    return this.ratings?.find((r) => r.idPost === postId);
   }
 
   setFilter(filter: string) {
@@ -97,7 +85,8 @@ export class PostsListComponent implements OnInit {
 
     this.posts = [...this.posts].sort((a, b) => {
       if (this.sortKey === 'Rating') return b.Rating - a.Rating;
-      if (this.sortKey === 'DateOfPosting') return +new Date(b.DateOfPosting) - +new Date(a.DateOfPosting);
+      if (this.sortKey === 'DateOfPosting')
+        return +new Date(b.DateOfPosting) - +new Date(a.DateOfPosting);
       return 0;
     });
   }

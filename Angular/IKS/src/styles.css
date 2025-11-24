@@ -1,4 +1,258 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+html {
+  font-family: 'Raleway', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  --primary-color: #50c78f;
+  --primary-color-trans: #50c78f25;
+  --secondary-color: #b1374c;
+  --background: #303036;
+  --background-darker: #242428;
+  --text: #f4f4f5;
+  --text-darker: #9f9fa8;
+  --text-darker-trans: #9f9fa843;
+
+  --box-shadow: 0px 5px 10px var(--background-darker);
+
+  --border-radius: 1em;
+
+  --button-padding: 0.5em 0.7em;
+
+  --transition: 0.33s;
+  color: var(--text);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button,
+select,
+input,
+textarea {
+  font-family: 'Raleway', sans-serif;
+}
+
+::selection {
+  background-color: var(--primary-color);
+}
+::-webkit-scrollbar {
+  background: var(--background-darker);
+  width: 0.7em;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--background);
+  border-radius: var(--border-radius);
+}
+::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+}
+::-webkit-scrollbar-track {
+  background: var(--background-darker);
+  border-radius: var(--border-radius);
+}
+
+body {
+  background: #242428;
+  background: conic-gradient(from 45deg, #242428, #303036);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow-y: scroll;
+}
+
+h3 {
+  color: var(--primary-color);
+  margin: 0 0 0.5em 0;
+}
+
+button {
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  color: var(--text-darker);
+  border: 1.5px solid var(--text-darker);
+  font-size: 0.9em;
+  padding: var(--button-padding);
+  cursor: pointer;
+  align-items: center;
+
+  display: flex;
+  vertical-align: middle;
+
+  transition: var(--transition);
+}
+button:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+button:active {
+  color: var(--text-darker);
+  border-color: var(--text-darker);
+  transform: scale(0.95);
+}
+
+.transition {
+  transition: 0.33s !important;
+}
+
+.section {
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(13px);
+  backdrop-filter: blur(13px);
+}
+
+.modal {
+  margin: auto;
+  margin-top: 10%;
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+  border: 3px solid var(--background-darker);
+}
+
+.divider {
+  border: 0.1px solid var(--text-darker);
+  margin: 0.2em 0.5em;
+  border-radius: var(--border-radius);
+}
+
+input,
+textarea,
+select {
+  border-radius: var(--border-radius);
+  background-color: var(--background-darker);
+  border: 1px solid var(--background-darker);
+  padding: 0 0.5em;
+  color: var(--text);
+  outline: none;
+  transition: var(--transition) !important;
+}
+select {
+  padding: var(--button-padding);
+  cursor: pointer;
+}
+option:hover {
+  background: var(--primary-color);
+}
+textarea {
+  resize: none;
+  height: 5em;
+}
+input:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  transition: var(--transition);
+}
+input::placeholder {
+  color: var(--text-darker);
+}
+
+input[type='date']::-webkit-datetime-edit {
+  color: var(--text);
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.invalid {
+  border-color: var(--secondary-color);
+}
+
+label {
+  color: var(--text-darker);
+  font-weight: bold;
+}
+
+.greenButton {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--background);
+  font-weight: bold;
+}
+.greenButtonTrans {
+  background-color: var(--primary-color-trans);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+.greenButton:hover,
+.greenButtonTrans {
+  background-color: var(--primary-color-trans);
+}
+
+.darkerButton {
+  background-color: var(--background-darker);
+  border: 0;
+  color: var(--text-darker);
+}
+
+/*Input switch*/
+.switch {
+  margin-top: 0.5em;
+  position: relative;
+  display: inline-block;
+  width: 2.625em; /* adjusted width */
+  height: 1.5em; /* your target height */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-darker);
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 1.125em; /* knob height */
+  width: 1.125em; /* knob width */
+  left: 0.1875em; /* padding inside the track */
+  bottom: 0.1875em;
+  background-color: var(--background);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(1.125em); /* knob slides the full width minus knob size and padding */
+}
+
+.flexHorizontal {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+.flexVertical {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.flexVerticalAlign {
+  display: flex;
+  vertical-align: middle;
+}
