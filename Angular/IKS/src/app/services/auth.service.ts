@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
-import { User } from '../shared/Klase/user';
+import { User } from '../shared/classes/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   // @ts-ignore
@@ -18,7 +18,7 @@ export class AuthService {
 
   registerUser(data: any): Observable<any> {
     return this.api.request('POST', 'auth/register', data);
-  }  
+  }
 
   editProfile(data: any): Observable<any> {
     return this.api.request('PUT', 'editProfile', data);
