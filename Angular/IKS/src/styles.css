@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-html {
+html,
+body {
   font-family: 'Raleway', sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -244,14 +245,11 @@ input:checked + .slider:before {
 .flexHorizontal {
   display: flex;
   justify-content: space-between;
-  gap: 1em;
 }
 .flexVertical {
   display: flex;
   justify-content: space-between;
-  gap: 1em;
 }
-
 .flexVerticalAlign {
   display: flex;
   vertical-align: middle;

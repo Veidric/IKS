@@ -1,32 +1,37 @@
-<!-- Minimal modal implementation matching original CSS -->
-<div>
-    <button class="icon-button" (click)="openComments()">
-        <!-- You can replace with an icon component -->
-        💬
-    </button>
-    <div>{{ numberOfComments || 0 }}</div>
+<div class="ratingsAndComments">
+  <div class="postIcon transition">
+    <span class="material-symbols-outlined"> comment </span>
+  </div>
+  <div>{{ numberOfComments || 0 }}</div>
 </div>
 
-
-<div class="modal commentsModal" *ngIf="open">
-    <div class="comments">
-        <div *ngIf="comments?.length; else noComments">
-            <div *ngFor="let comment of comments; let i = index">
-                <div class="postLink" (click)="visitProfile(comment.id)">{{ comment.Username }}</div>
-                <div style="color: var(--text); font-style: italic; margin: 0.5em 0">{{ comment.Content }}</div>
-            </div>
+<!-- <div class="modal commentsModal" *ngIf="open">
+  <div class="comments">
+    <div *ngIf="comments?.length; else noComments">
+      <div *ngFor="let comment of comments; let i = index">
+        <div class="postLink" (click)="visitProfile(comment.id)">{{ comment.Username }}</div>
+        <div style="color: var(--text); font-style: italic; margin: 0.5em 0">
+          {{ comment.Content }}
         </div>
-        <ng-template #noComments>
-            <div style="color: var(--text-darker)">No comments</div>
-        </ng-template>
+      </div>
     </div>
+    <ng-template #noComments>
+      <div style="color: var(--text-darker)">No comments</div>
+    </ng-template>
+  </div>
 
-
-    <div class="commentForm">
-        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
-            <input type="text" placeholder="Comment" formControlName="content"
-                [class.invalid]="commentForm.controls['content'].invalid && (commentForm.controls['content'].touched || commentForm.touched)" />
-            <button type="submit" style="width: fit-content">Submit</button>
-        </form>
-    </div>
-</div>
+  <div class="commentForm">
+    <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+      <input
+        type="text"
+        placeholder="Comment"
+        formControlName="content"
+        [class.invalid]="
+          commentForm.controls['content'].invalid &&
+          (commentForm.controls['content'].touched || commentForm.touched)
+        "
+      />
+      <button type="submit" style="width: fit-content">Submit</button>
+    </form>
+  </div>
+</div> -->

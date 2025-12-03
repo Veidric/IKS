@@ -3,38 +3,37 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PostsService {
-
   constructor(private api: ApiService) {}
 
   fetchPosts(route: string, id: number | string): Observable<any> {
-    return this.api.request('POST', route, { idKorisnik: id });
-  }
-
-  fetchPostRatings(id: number | string): Observable<any> {
-    return this.api.request('POST', 'ratings', { idKorisnik: id });
+    return this.api.request('GET', `posts/${id}/${route}`);
   }
 
   addPost(data: any): Observable<any> {
-    return this.api.request('POST', 'makepost', data);
+    return this.api.request('POST', 'posts', data);
   }
 
   editPost(data: any): Observable<any> {
-    return this.api.request('PUT', 'editPost', data);
+    return this.api.request('PUT', 'posts', data);
   }
 
-  getComments(data: any): Observable<any> {
-    return this.api.request('POST', 'comments', data);
+  fetchComments(id: any): Observable<any> {
+    return this.api.request('GET', 'posts/comments/' + id);
   }
 
   addComment(data: any): Observable<any> {
-    return this.api.request('POST', 'makecomment', data);
+    return this.api.request('POST', 'posts/comments/', data);
+  }
+
+  fetchPostRatings(id: number | string): Observable<any> {
+    return this.api.request('GET', 'posts/ratings/' + id);
   }
 
   ratePost(data: any): Observable<any> {
-    return this.api.request('POST', 'rate', data);
+    return this.api.request('POST', 'postrate', data);
   }
 
   unratePost(data: any): Observable<any> {
