@@ -24,6 +24,9 @@ app.use('/api', apiRouter);
 const authRouter = require('./routes/auth')(express, pool, jwt, config.secret);
 app.use('/api/auth', authRouter);
 
+const admRouter = require('./routes/admin')(express, pool, jwt, config.secret);
+app.use('/api/admin', admRouter);
+
 
 
 //pokretanje servera na portu 8080, promjeniti u config.js ako je potrebno
