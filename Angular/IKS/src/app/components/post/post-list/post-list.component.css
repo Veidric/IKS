@@ -1,0 +1,24 @@
+/*Sort & Filter*/
+.frontPageBar {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: var(--border-radius);
+  background-color: var(--background-darker);
+  box-shadow: var(--box-shadow);
+  padding: 0.5em;
+  gap: 0.5em;
+}
+.frontPageBar > * {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  gap: 0.3em;
+}
+
+.buttonSelected,
+.buttonSelected:hover {
+  color: var(--text);
+  border-color: var(--text);
+}

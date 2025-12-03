@@ -1,109 +1,95 @@
 .modal {
-    width: 25em;
-    overflow: hidden;
+  width: 25em;
+  overflow: hidden;
 }
 .modal > div {
-    padding: 0;
+  padding: 0;
 }
 .modal:focus {
-    outline: none;
-}
-.commentForm form {
-    background-color: var(--background-darker);
-    display: flex;
-    gap: 0.5em;
-    padding: 0.5em;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.commentForm input {
-    width: 100%;
-    border-color: var(--text-darker);
-}
-.commentForm input:focus {
-    border-color: var(--primary-color);
-}
-
-.comments {
-    overflow-y: auto;
-    max-height: 20em;
-    min-width: 20em;
-    max-width: 30em;
-}
-.comments > div {
-    padding: var(--button-padding);
-}
-.comments > div:nth-child(odd) {
-    background-color: var(--background);
+  outline: none;
 }
 
 .postLink {
-    color: var(--primary-color);
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
+  color: var(--primary-color);
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
 }
 .postLink:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .postDateDiv {
-    position: relative;
-    min-width: 50%;
+  position: relative;
+  min-width: 50%;
 }
 .postDate {
-    color: var(--text-darker);
-    z-index: 1;
+  color: var(--text-darker);
+  z-index: 1;
 }
 .editPostButton {
-    padding: 2px 0.7em;
-    opacity: 0;
-    z-index: 2;
-    gap: 0.3em;
+  padding: 2px 0.7em;
+  opacity: 0;
+  z-index: 2;
+  gap: 0.3em;
 }
 .editPostButton svg {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }
 .postDate,
 .editPostButton {
-    position: absolute;
-    right: 0;
-    transition: var(--transition);
+  position: absolute;
+  right: 0;
+  transition: var(--transition);
 }
 .post:hover .editPostButtonDiv .postDate {
-    opacity: 0;
-    transition: var(--transition);
+  opacity: 0;
+  transition: var(--transition);
 }
 .post:hover .editPostButton {
-    opacity: 1;
-    transition: var(--transition);
+  opacity: 1;
+  transition: var(--transition);
 }
 
 .post + .flexHorizontal {
-    min-height: 1em;
+  min-height: 1em;
 }
 .postContent {
-    margin: 0.8em 0;
-    border-radius: var(--border-radius);
-    padding: 1em;
-    background-color: var(--background-darker);
+  margin: 0.8em 0;
+  border-radius: var(--border-radius);
+  padding: 1em;
+  background-color: var(--background-darker);
 }
-.ratingButtons {
-    display: flex;
-    justify-content: left;
-    gap: 1em;
+.ratingsAndComments {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  gap: 0.7em;
 }
 
 .postTopBar {
-    user-select: none;
+  user-select: none;
 }
 
 .postTopBarLeft {
-    display: flex;
-    justify-content: left;
+  display: flex;
+  justify-content: left;
 }
 
 .postTopBarLeft div {
-    color: var(--text-darker);
+  color: var(--text-darker);
+}
+
+/* POST ICONS */
+.postIcon {
+  color: var(--text);
+  transform: scale(0.8);
+}
+
+.postIcon:hover {
+  cursor: pointer;
+  transform: scale(0.9);
+}
+.postIcon:active {
+  transform: scale(0.8);
 }

@@ -1,0 +1,29 @@
+.commentForm form {
+  background-color: var(--background-darker);
+  display: flex;
+  gap: 0.5em;
+  padding: 0.5em;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.commentForm input {
+  width: 100%;
+  border-color: var(--text-darker);
+}
+.commentForm input:focus {
+  border-color: var(--primary-color);
+}
+
+.comments {
+  overflow-y: auto;
+  max-height: 20em;
+  min-width: 20em;
+  max-width: 30em;
+}
+.comments > div {
+  padding: var(--button-padding);
+}
+.comments > div:nth-child(odd) {
+  background-color: var(--background);
+}

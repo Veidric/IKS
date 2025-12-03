@@ -6,31 +6,30 @@
     </div>
 
     <div class="postDateDiv">
-      <div class="postDate">{{ formatDatePost(post.CreatedAt) }}</div>
+      <div class="postDate">{{ post.DateOfPosting | formatDatePost }}</div>
     </div>
   </div>
 
   <div class="postContent">{{ post.Content }}</div>
 
-  <div class="bottomBar flexHorizontal">
-    <div class="ratingButtons">
+  <div class="flexHorizontal">
+    <div class="ratingsAndComments">
       <div class="postIcon transition" (click)="pressLike()">
-        <ng-container *ngIf="userPostRating === 1; else outlineLike">👍</ng-container>
-        <ng-template #outlineLike>👍🏻</ng-template>
+        <span class="material-symbols-outlined"> thumb_up </span>
       </div>
+
       <div>{{ postRating }}</div>
 
       <div class="postIcon transition" (click)="pressDislike()">
-        <ng-container *ngIf="userPostRating === -1; else outlineDislike">👎</ng-container>
-        <ng-template #outlineDislike>👎🏻</ng-template>
+        <span class="material-symbols-outlined"> thumb_down </span>
       </div>
     </div>
 
     <div>
-      <app-comments
-        [initialNumberOfComments]="post.Comments"
-        [postId]="post.PostID">
+      <app-comments [initialNumberOfComments]="post.Comments" [postId]="post.PostID">
       </app-comments>
     </div>
   </div>
 </div>
+
+<!-- <div>{{ post.Content }}</div> -->

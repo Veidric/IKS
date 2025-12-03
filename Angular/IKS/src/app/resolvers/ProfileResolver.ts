@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PostsService } from '../services/posts.service';
 import { User } from '../shared/classes/user';
-import { RouterModule } from '@angular/router';
 import { ProfileService } from '../services/profile.service';
 import { forkJoin } from 'rxjs';
-import { th } from 'date-fns/locale';
 
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PostsResolver implements Resolve<any> {
+export class ProfileResolver implements Resolve<any> {
   curUser: User = new User();
   loading = true;
   user: User = new User();
