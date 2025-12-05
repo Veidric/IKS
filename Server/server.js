@@ -17,6 +17,9 @@ app.use(morgan("dev"));
 //dozvoljavanje konekcije i postavke corsa
 app.use(cors());
 
+const admRouter = require('./routes/admin')(express, pool, jwt, config.secret);
+app.use('/api/admin', admRouter);
+
 const apiRouter = require("./routes/api")(express, pool, jwt, config.secret);
 app.use("/api", apiRouter);
 
