@@ -24,7 +24,7 @@ export class AuthService {
     return this.api.request('PUT', 'editProfile', data);
   }
 
-  user() {
+  getUser() {
     return this.currentUser;
   }
 

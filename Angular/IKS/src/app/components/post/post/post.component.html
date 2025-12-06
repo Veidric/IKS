@@ -15,13 +15,23 @@
   <div class="flexHorizontal">
     <div class="ratingsAndComments">
       <div class="postIcon transition" (click)="pressLike()">
-        <span class="material-symbols-outlined"> thumb_up </span>
+        <span
+          class="material-symbols-outlined"
+          [style.color]="userPostRating() === 1 ? 'var(--primary-color)' : 'inherit'"
+        >
+          thumb_up
+        </span>
       </div>
 
       <div>{{ postRating }}</div>
 
       <div class="postIcon transition" (click)="pressDislike()">
-        <span class="material-symbols-outlined"> thumb_down </span>
+        <span
+          class="material-symbols-outlined"
+          [style.color]="userPostRating() === -1 ? 'var(--secondary-color)' : 'inherit'"
+        >
+          thumb_down
+        </span>
       </div>
     </div>
 

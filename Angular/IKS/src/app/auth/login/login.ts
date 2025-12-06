@@ -29,6 +29,7 @@ export class Login {
       localStorage.setItem('user', JSON.stringify(jao['user']));
       localStorage.setItem('token', JSON.stringify(jao['token']));
       this.router.navigate(['/feed']);
+      this.authService.setUser(jao['user']);
     });
 
     if (f) {

@@ -29,14 +29,14 @@ export class PostsService {
   }
 
   fetchPostRatings(id: number | string): Observable<any> {
-    return this.api.request('GET', 'posts/ratings/' + id);
+    return this.api.request('GET', `posts/${id}/ratings`);
   }
 
-  ratePost(data: any): Observable<any> {
-    return this.api.request('POST', 'postrate', data);
+  ratePost(id: number, data: any): Observable<any> {
+    return this.api.request('POST', `posts/${id}/ratings`, data);
   }
 
-  unratePost(data: any): Observable<any> {
-    return this.api.request('DELETE', 'rate', data);
+  unratePost(id: number, data: any): Observable<any> {
+    return this.api.request('DELETE', `posts/${id}/ratings`, data);
   }
 }

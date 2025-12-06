@@ -14,23 +14,33 @@
   <div>
     <!-- Filtering -->
     @if(route !== 'profile') {
-    <button (click)="setFilter()" [class.buttonSelected]="filter === ''">Public</button>
-    <button (click)="setFilter('following')" [class.buttonSelected]="filter === 'following'">
-      Following
-    </button>
+    <div class="buttonGroup">
+      <button class="iconButton">
+        <span class="material-symbols-outlined"> filter_alt </span>
+      </button>
+      <button (click)="setFilter()" [class.buttonSelected]="filter === ''">Public</button>
+      <button (click)="setFilter('following')" [class.buttonSelected]="filter === 'following'">
+        Following
+      </button>
+    </div>
 
     <div class="divider"></div>
     }
 
     <!-- Sorting -->
-    <button (click)="setSortKey('date')" [class.buttonSelected]="sortKey === 'date'">New</button>
-    <button (click)="setSortKey('rating')" [class.buttonSelected]="sortKey === 'rating'">
-      Popular
-    </button>
+    <div class="buttonGroup">
+      <button class="iconButton">
+        <span class="material-symbols-outlined"> swap_vert </span>
+      </button>
+      <button (click)="setSortKey('date')" [class.buttonSelected]="sortKey === 'date'">New</button>
+      <button (click)="setSortKey('rating')" [class.buttonSelected]="sortKey === 'rating'">
+        Popular
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- POSTS -->
 @for(post of posts() | sortPosts: sortKey; track post.PostID) {
-<app-post [post]="post" [rating]="post.Rating" />
+<app-post [post]="post" [userRating]="getPostRating(post.PostID)" />
 }

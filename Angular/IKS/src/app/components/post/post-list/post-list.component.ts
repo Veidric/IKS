@@ -28,12 +28,23 @@ export class PostsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPosts();
+    this.loadPostRatings();
   }
 
   loadPosts() {
     this.postsService.fetchPosts(this.route, this.userId).subscribe((res) => {
       this.posts.set(res);
     });
+  }
+  loadPostRatings() {
+    this.postsService.fetchPostRatings(this.userId).subscribe((res) => {
+      this.ratings = res;
+    });
+  }
+
+  getPostRating(postId: number): string {
+    const rating = this.ratings.find((r) => r.idPost === postId);
+    return rating ? rating.Value : '0';
   }
 
   setFilter(filter: string = '') {
