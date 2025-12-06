@@ -9,7 +9,6 @@ module.exports = function (express, pool) {
   postsRouter
     .route("/:id")
     .get(async function (req, res) {
-      console.log("Fetching post with ID:", req.params.id);
       try {
         let [[rows]] = await pool.query("call GetPost(?)", [req.params.id]);
         res.status(200).json(rows);
@@ -56,21 +55,21 @@ module.exports = function (express, pool) {
 
   // RATINGS------------------------------------------------------
   postsRouter
-    .route("/ratings/:id")
+    .route("/:id/ratings")
     // Get users post ratings
     .get(async function (req, res) {
       try {
         let [[rows]] = await pool.query("call GetRatings(?)", [req.params.id]);
         res.status(200).json(rows);
       } catch (e) {
-        res.status(400).json({ message: "Bad request" });
+        res.status(400).json({ message: "Bad request" }); // Bad request
       }
     })
     // Rate a post
     .post(async function (req, res) {
       try {
         await pool.query("call RatePost(?, ?, ?)", [
-          req.param.id,
+          req.params.id,
           req.body.idPost,
           req.body.value,
         ]);
@@ -83,7 +82,7 @@ module.exports = function (express, pool) {
     .delete(async function (req, res) {
       try {
         await pool.query("call UnratePost(?, ?)", [
-          req.param.idUser,
+          req.params.id,
           req.body.idPost,
         ]);
         res.status(200).json({ message: "Success!" });
@@ -99,7 +98,7 @@ module.exports = function (express, pool) {
     .get(async function (req, res) {
       try {
         let [[rows]] = await pool.query("call GetComments(?)", [
-          req.param.postId,
+          req.params.postId,
         ]);
         res.status(200).json(rows);
       } catch (e) {

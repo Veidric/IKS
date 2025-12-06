@@ -15,29 +15,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    MatIconModule
-  ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, MatIconModule],
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss']
+  styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent implements OnInit {
-
   @Input() user!: any;
   @Input() followers!: any[];
   @Input() following!: any[];
 
   editing = false;
-  usernameControl = new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]);
+  usernameControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(5),
+    Validators.maxLength(20),
+  ]);
 
   followingStatus = false;
   isLoggedUser = false;
   loggedUserId = 0;
-
-  
 
   constructor(
     private auth: AuthService,
@@ -49,53 +45,49 @@ export class UserInfoComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-
-
-    this.loggedUserId = await this.auth.user().id;
-    console.log(this.user)
+    this.loggedUserId = await this.auth.getUser().id;
+    console.log(this.user);
     this.isLoggedUser = this.loggedUserId === this.user.id;
 
-    this.followingStatus = this.followers.some(f => f.id === this.loggedUserId);
+    this.followingStatus = this.followers.some((f) => f.id === this.loggedUserId);
     this.usernameControl.setValue(this.user.Username);
   }
 
   toggleFollow() {
     if (!this.followingStatus) {
-      this.profileService.follow(this.loggedUserId, this.user.id).subscribe(() =>
-        this.followingStatus = true
-      );
+      this.profileService
+        .follow(this.loggedUserId, this.user.id)
+        .subscribe(() => (this.followingStatus = true));
     } else {
-      this.profileService.unfollow(this.loggedUserId, this.user.id).subscribe(() =>
-        this.followingStatus = false
-      );
+      this.profileService
+        .unfollow(this.loggedUserId, this.user.id)
+        .subscribe(() => (this.followingStatus = false));
     }
   }
 
   messageUser() {
-    this.chatService.createChat(this.loggedUserId, this.user.id)
-      .subscribe(chat => {
-        const id = chat[0].chatId;
-        this.router.navigate(['/inbox/chat', id], { state: { username: this.user.Username }});
-      });
+    this.chatService.createChat(this.loggedUserId, this.user.id).subscribe((chat) => {
+      const id = chat[0].chatId;
+      this.router.navigate(['/inbox/chat', id], { state: { username: this.user.Username } });
+    });
   }
 
   saveUsername() {
-    this.profileService.editUsername(this.user.id, this.usernameControl.value!)
-      .subscribe(() => {
-        this.auth.setUsername(this.usernameControl.value!);
-        this.editing = false;
-      });
+    this.profileService.editUsername(this.user.id, this.usernameControl.value!).subscribe(() => {
+      this.auth.setUsername(this.usernameControl.value!);
+      this.editing = false;
+    });
   }
 
   openFollowers() {
     this.dialog.open(UsersListModalComponent, {
-      data: { list: this.followers, title: `${this.followers.length} followers` }
+      data: { list: this.followers, title: `${this.followers.length} followers` },
     });
   }
 
   openFollowing() {
     this.dialog.open(UsersListModalComponent, {
-      data: { list: this.following, title: `${this.following.length} following` }
+      data: { list: this.following, title: `${this.following.length} following` },
     });
   }
 }

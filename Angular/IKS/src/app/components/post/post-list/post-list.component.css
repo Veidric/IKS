@@ -22,3 +22,18 @@
   color: var(--text);
   border-color: var(--text);
 }
+
+.iconButton {
+  padding: 0.3em;
+}
+.iconButton,
+.iconButton:hover,
+.iconButton:active {
+  cursor: default;
+  color: var(--text-darker);
+  background-color: var(--background);
+  border-color: var(--text-darker);
+}
+.iconButton span {
+  transform: scale(0.8) translateX(1px);
+}

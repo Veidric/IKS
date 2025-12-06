@@ -24,10 +24,10 @@ import { LoadingSpinnerComponent } from '../../components/loading-spinner/loadin
     ReactiveFormsModule,
     MatIconModule,
     HorizontalDividerComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
   ],
   templateUrl: './chat-page.component.html',
-  styleUrls: ['./chat-page.component.scss']
+  styleUrls: ['./chat-page.component.scss'],
 })
 export class ChatPageComponent implements OnInit, OnDestroy {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
@@ -48,7 +48,7 @@ export class ChatPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(1)]]
+      content: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -89,22 +89,23 @@ export class ChatPageComponent implements OnInit, OnDestroy {
   sendMessage() {
     if (this.form.invalid) return;
     const content = this.form.controls['content'].value;
-    const user = this.auth.user() || {};
+    const user = this.auth.getUser() || {};
     const payload = {
       idChat: this.idChat,
       idKorisnik: user.id,
-      content
+      content,
     };
 
-    const s = this.chatService.addMessage(payload).pipe(
-      switchMap(() => this.chatService.getChat(this.idChat))
-    ).subscribe((res: any) => {
-      this.form.reset();
-      this.messages = (Array.isArray(res) ? res : res).sort((a: any, b: any) => {
-        return new Date(a.TimeOfMessage).getTime() - new Date(b.TimeOfMessage).getTime();
+    const s = this.chatService
+      .addMessage(payload)
+      .pipe(switchMap(() => this.chatService.getChat(this.idChat)))
+      .subscribe((res: any) => {
+        this.form.reset();
+        this.messages = (Array.isArray(res) ? res : res).sort((a: any, b: any) => {
+          return new Date(a.TimeOfMessage).getTime() - new Date(b.TimeOfMessage).getTime();
+        });
+        setTimeout(() => this.scrollToBottom(), 0);
       });
-      setTimeout(() => this.scrollToBottom(), 0);
-    });
     this.sub.add(s);
   }
 
@@ -124,7 +125,9 @@ export class ChatPageComponent implements OnInit, OnDestroy {
       if (el) {
         el.scrollTop = el.scrollHeight;
       }
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   ngOnDestroy(): void {

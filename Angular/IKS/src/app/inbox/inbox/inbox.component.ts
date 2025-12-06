@@ -13,14 +13,9 @@ import { LoadingSpinnerComponent } from '../../components/loading-spinner/loadin
 @Component({
   selector: 'app-inbox-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatIconModule,
-    LoadingSpinnerComponent
-  ],
+  imports: [CommonModule, RouterModule, MatIconModule, LoadingSpinnerComponent],
   templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.scss']
+  styleUrls: ['./inbox.component.scss'],
 })
 export class InboxComponent implements OnInit {
   chats: any[] = [];
@@ -35,21 +30,21 @@ export class InboxComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  const user = this.auth.user() || {};
-  this.userId = user.id;
-  this.username = user.username;
+    const user = this.auth.getUser() || {};
+    this.userId = user.id;
+    this.username = user.username;
 
-  this.chatService.getChats(this.userId).subscribe({
-    next: (res: any) => {
-      const arr = Array.isArray(res) ? res : [];
-      this.chats = arr.filter((c: any) => c.Content);
-      this.isLoading = false;
-    },
-    error: () => {
-      this.isLoading = false;
-    }
-  });
-}
+    this.chatService.getChats(this.userId).subscribe({
+      next: (res: any) => {
+        const arr = Array.isArray(res) ? res : [];
+        this.chats = arr.filter((c: any) => c.Content);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
 
   openChat(chat: any) {
     const username = chat.username1 === this.username ? chat.username2 : chat.username1;
