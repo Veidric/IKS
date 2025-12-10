@@ -36,8 +36,12 @@
     </div>
 
     <div>
-      <app-comments [initialNumberOfComments]="post.Comments" [postId]="post.PostID">
-      </app-comments>
+      <div class="ratingsAndComments">
+        <div class="postIcon transition" (click)="openDialog(post.PostID)">
+          <span class="material-symbols-outlined"> comment </span>
+        </div>
+        <div>{{ numberOfComments() }}</div>
+      </div>
     </div>
   </div>
 </div>

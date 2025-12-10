@@ -1,6 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PostsService } from '../../../services/posts.service';
+import { Comment } from '../../../shared/classes/comment';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-comments',
@@ -10,55 +15,60 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./comments.component.css'],
 })
 export class CommentsComponent {
-  @Input() postId: number = 0;
-  @Input() initialNumberOfComments: number = 0;
+  readonly dialogRef = inject(MatDialogRef<CommentsComponent>);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
 
-  numberOfComments: number = this.initialNumberOfComments;
+  commentGroup = new FormGroup({
+    content: new FormControl('', [Validators.required, Validators.maxLength(256)]),
+  });
+  get content() {
+    return this.commentGroup.get('content');
+  }
+  submitted: boolean = false;
 
-  // openComments() {
-  //   this.isPending = true;
+  comments = signal<Comment[]>([]);
 
-  //   this.postData.fetchComments({ idObjava: this.postId }).subscribe({
-  //     next: (res: any[]) => {
-  //       this.comments = res || [];
-  //       this.open = true;
-  //       this.isPending = false;
-  //     },
-  //     error: () => (this.isPending = false),
-  //   });
-  // }
+  constructor(
+    private postsService: PostsService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
-  // submitComment() {
-  //   if (this.commentForm.invalid) return;
+  ngOnInit(): void {
+    this.postsService.fetchComments(this.data.postId).subscribe((res) => {
+      this.comments.set(res);
+    });
+  }
 
-  //   const user = this.auth.user();
-  //   const content = this.commentForm.value.content!;
-  //   this.isPending = true;
+  submitComment() {
+    this.submitted = true;
+    if (this.commentGroup.invalid) {
+      return;
+    } else {
+      this.postsService
+        .addComment(this.data.postId, {
+          userId: this.auth.getUser().id,
+          content: this.commentGroup.value.content,
+        })
+        .subscribe((res) => {
+          if (res.message === 'Success!') {
+            this.comments.update((comments) => [
+              ...comments,
+              new Comment(
+                this.auth.getUser().id,
+                this.auth.getUser().username,
+                this.commentGroup.value.content!
+              ),
+            ]);
+            this.commentGroup.reset();
+            this.submitted = false;
+          }
+        });
+    }
+  }
 
-  //   this.postData
-  //     .addComment({
-  //       idKorisnik: user.id,
-  //       idPost: this.postId,
-  //       content,
-  //     })
-  //     .subscribe({
-  //       next: () => {
-  //         this.comments.push({
-  //           id: user.id,
-  //           Username: user.username,
-  //           Content: content,
-  //         });
-
-  //         this.numberOfComments++;
-  //         this.commentForm.reset();
-  //         this.isPending = false;
-  //       },
-  //       error: () => (this.isPending = false),
-  //     });
-  // }
-
-  // visitProfile(id: number) {
-  //   this.open = false;
-  //   this.router.navigate(['/profile', id]);
-  // }
+  visitProfile(id: number) {
+    this.dialogRef.close();
+    this.router.navigate(['/profile', id]);
+  }
 }

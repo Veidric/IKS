@@ -109,8 +109,8 @@ module.exports = function (express, pool) {
     .post(async function (req, res) {
       try {
         await pool.query("call MakeComment(?, ?, ?)", [
+          req.body.userId,
           req.params.postId,
-          req.body.idUser,
           req.body.content,
         ]);
         res.status(200).json({ message: "Success!" });

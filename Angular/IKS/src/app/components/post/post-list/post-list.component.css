@@ -17,10 +17,16 @@
   gap: 0.3em;
 }
 
+.filterAndSort button:hover {
+  border-color: var(--text-darker);
+  color: var(--text);
+}
+
 .buttonSelected,
 .buttonSelected:hover {
   color: var(--text);
-  border-color: var(--text);
+  border-color: var(--text-darker);
+  background-color: var(--background);
 }
 
 .iconButton {
@@ -30,7 +36,7 @@
 .iconButton:hover,
 .iconButton:active {
   cursor: default;
-  color: var(--text-darker);
+  color: var(--text-darker) !important;
   background-color: var(--background);
   border-color: var(--text-darker);
 }

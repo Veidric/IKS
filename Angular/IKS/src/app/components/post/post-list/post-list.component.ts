@@ -5,11 +5,12 @@ import { PostsService } from '../../../services/posts.service';
 import { PostComponent } from '../post/post.component';
 import { Post } from '../../../shared/classes/post';
 import { SortPostsPipe } from '../../../pipes/sort-posts-pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-posts-list',
   standalone: true,
-  imports: [CommonModule, PostComponent, SortPostsPipe],
+  imports: [CommonModule, PostComponent, SortPostsPipe, MatTooltipModule],
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css'],
 })
@@ -18,7 +19,7 @@ export class PostsListComponent implements OnInit {
   @Input() userId!: number;
 
   posts = signal<Post[]>([]);
-  ratings: any[] = [];
+  ratingsMap = signal<Map<number, number>>(new Map());
 
   filter: string = '';
 
@@ -38,13 +39,9 @@ export class PostsListComponent implements OnInit {
   }
   loadPostRatings() {
     this.postsService.fetchPostRatings(this.userId).subscribe((res) => {
-      this.ratings = res;
+      const map = new Map(res.map((r) => [r.idPost, r.Value]));
+      this.ratingsMap.set(map);
     });
-  }
-
-  getPostRating(postId: number): string {
-    const rating = this.ratings.find((r) => r.idPost === postId);
-    return rating ? rating.Value : '0';
   }
 
   setFilter(filter: string = '') {
