@@ -70,6 +70,7 @@ h3 {
   margin: 0 0 0.5em 0;
 }
 
+/* BUTTON ---------------------------------------------------------------*/
 button {
   border-radius: var(--border-radius);
   background-color: transparent;
@@ -112,12 +113,30 @@ button:active {
   backdrop-filter: blur(13px);
 }
 
+/* MODAL/DIALOG----------------------------------------------------------------*/
 .modal {
   margin: auto;
-  margin-top: 10%;
   background-color: var(--background);
   border-radius: var(--border-radius);
   border: 3px solid var(--background-darker);
+}
+/* Ensures that the background screen remains unchanged when modal opens */
+.cdk-global-scrollblock {
+  overflow: hidden !important;
+}
+/* Gets rid of the default modal radius */
+.mat-mdc-dialog-surface {
+  overflow-y: visible !important;
+}
+/* Backdrop blur effect */
+.cdk-overlay-backdrop {
+  backdrop-filter: blur(5px) !important; /* optional dimming */
+}
+/* Dialog/Modal transition speed */
+.mat-mdc-dialog-container,
+.mdc-dialog__surface,
+.cdk-overlay-backdrop {
+  transition-duration: var(--transition); /* default is 250ms */
 }
 
 .divider {
@@ -126,6 +145,7 @@ button:active {
   border-radius: var(--border-radius);
 }
 
+/* INPUTS---------------------------------------------------------- */
 input,
 textarea,
 select {
@@ -207,11 +227,16 @@ label {
 .buttonGroup button:active {
   transform: scale(1);
 }
+.buttonGroup > *:not(:last-child):not(:first-child) {
+  border-right-width: 0;
+  border-left-width: 0;
+}
 .buttonGroup > :first-child {
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
 .buttonGroup > :last-child {
+  border-left-width: 0;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
 }
@@ -274,4 +299,37 @@ input:checked + .slider:before {
 .flexVerticalAlign {
   display: flex;
   vertical-align: middle;
+}
+
+.inputWrapper {
+  position: relative; /* allows absolute positioning inside */
+  display: inline-block;
+}
+
+/* Your input keeps its natural size */
+.inputWrapper input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.inputErrorMessage {
+  position: absolute;
+  z-index: 10;
+  font-size: 0.7em;
+  padding: var(--button-padding);
+  bottom: -2.5em;
+  left: 5px;
+  color: var(--text);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  visibility: hidden;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.inputWrapper.error input {
+  border-color: var(--secondary-color);
+}
+.inputWrapper.error .inputErrorMessage {
+  visibility: visible;
+  opacity: 1;
 }

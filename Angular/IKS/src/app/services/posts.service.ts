@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
+import { Rating } from '../shared/classes/rating';
+import { Comment } from '../shared/classes/comment';
 
 @Injectable({
   providedIn: 'root',
@@ -20,15 +22,15 @@ export class PostsService {
     return this.api.request('PUT', 'posts', data);
   }
 
-  fetchComments(id: any): Observable<any> {
-    return this.api.request('GET', 'posts/comments/' + id);
+  fetchComments(postId: number): Observable<Comment[]> {
+    return this.api.request('GET', 'posts/comments/' + postId);
   }
 
-  addComment(data: any): Observable<any> {
-    return this.api.request('POST', 'posts/comments/', data);
+  addComment(postId: number, data: any): Observable<any> {
+    return this.api.request('POST', `posts/comments/${postId}`, data);
   }
 
-  fetchPostRatings(id: number | string): Observable<any> {
+  fetchPostRatings(id: number | string): Observable<Rating[]> {
     return this.api.request('GET', `posts/${id}/ratings`);
   }
 

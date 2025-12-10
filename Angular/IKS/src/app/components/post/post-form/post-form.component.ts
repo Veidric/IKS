@@ -5,14 +5,12 @@ import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angula
 import { PostsService } from '../../../services/posts.service';
 import { AuthService } from '../../../services/auth.service';
 
-import { TooltipComponent } from '../../tooltip/tooltip.component';
-
 @Component({
   selector: 'app-post-form',
   standalone: true,
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, TooltipComponent],
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class PostFormComponent {
   @Input() type: 'new' | 'edit' = 'new';

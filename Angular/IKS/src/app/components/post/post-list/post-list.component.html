@@ -11,11 +11,11 @@
   </div>
 
   <!-- Filtering & Sorting -->
-  <div>
+  <div class="filterAndSort">
     <!-- Filtering -->
     @if(route !== 'profile') {
     <div class="buttonGroup">
-      <button class="iconButton">
+      <button class="iconButton" matTooltip="Filter posts">
         <span class="material-symbols-outlined"> filter_alt </span>
       </button>
       <button (click)="setFilter()" [class.buttonSelected]="filter === ''">Public</button>
@@ -29,7 +29,7 @@
 
     <!-- Sorting -->
     <div class="buttonGroup">
-      <button class="iconButton">
+      <button class="iconButton" matTooltip="Sort posts">
         <span class="material-symbols-outlined"> swap_vert </span>
       </button>
       <button (click)="setSortKey('date')" [class.buttonSelected]="sortKey === 'date'">New</button>
@@ -42,5 +42,5 @@
 
 <!-- POSTS -->
 @for(post of posts() | sortPosts: sortKey; track post.PostID) {
-<app-post [post]="post" [userRating]="getPostRating(post.PostID)" />
+<app-post [post]="post" [userRating]="ratingsMap().get(post.PostID) ?? 0" />
 }
