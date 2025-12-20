@@ -1,30 +1,23 @@
-<div>
-  <button *ngIf="type === 'new'" (click)="toggleOpen()" class="greenButton">New post</button>
-  <button *ngIf="type === 'edit'" (click)="toggleOpen()" class="editPostButton whiteButton">
-    Edit post
-  </button>
-  <div class="modal auth" *ngIf="open">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <h1>{{ type === 'new' ? 'New post' : 'Edit Post' }}</h1>
-      <div>
-        <div class="label">
-          <label for="content">Content</label>
-          <!-- Tooltip component assumed available -->
-        </div>
-        <textarea
-          formControlName="content"
-          [class.invalid]="form.controls['content'].invalid"
-        ></textarea>
+<div class="modal form">
+  <form [formGroup]="postFormGroup" (ngSubmit)="onSubmit()">
+    <h1>{{ data.type === 'create' ? 'New post' : 'Edit Post' }}</h1>
+    <div>
+      <div class="label">
+        <label for="content">Content</label>
       </div>
-      <div>
-        <div class="label"><label for="visibility">Visibility</label></div>
-        <select formControlName="visibility">
-          <option value="public">Public</option>
-          <option value="followers">Followers</option>
-          <option value="private">Private</option>
-        </select>
+      <div class="inputWrapper" [class.error]="content?.invalid && submitted">
+        <textarea formControlName="content"></textarea>
+        <div class="charCounter">{{ content?.value?.length }}/281</div>
       </div>
-      <button type="submit" class="greenButton">Save</button>
-    </form>
-  </div>
+    </div>
+    <div>
+      <div class="label"><label for="visibility">Visibility</label></div>
+      <select formControlName="visibility">
+        <option value="public">Public</option>
+        <option value="followers">Followers</option>
+        <option value="private">Private</option>
+      </select>
+    </div>
+    <button type="submit" class="greenButton">Save</button>
+  </form>
 </div>

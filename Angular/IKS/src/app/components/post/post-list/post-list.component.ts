@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PostsService } from '../../../services/posts.service';
@@ -6,6 +6,8 @@ import { PostComponent } from '../post/post.component';
 import { Post } from '../../../shared/classes/post';
 import { SortPostsPipe } from '../../../pipes/sort-posts-pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { PostFormComponent } from '../post-form/post-form.component';
 
 @Component({
   selector: 'app-posts-list',
@@ -22,12 +24,17 @@ export class PostsListComponent implements OnInit {
   ratingsMap = signal<Map<number, number>>(new Map());
 
   filter: string = '';
-
   sortKey: string = 'date';
+
+  readonly dialog = inject(MatDialog);
 
   constructor(private postsService: PostsService) {}
 
   ngOnInit(): void {
+    this.refetchPosts();
+  }
+
+  refetchPosts() {
     this.loadPosts();
     this.loadPostRatings();
   }
@@ -53,5 +60,15 @@ export class PostsListComponent implements OnInit {
 
   setSortKey(key: string) {
     this.sortKey = key;
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(PostFormComponent, {
+      data: { type: 'create', content: '', visibility: 'public' },
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.refetchPosts();
+    });
   }
 }

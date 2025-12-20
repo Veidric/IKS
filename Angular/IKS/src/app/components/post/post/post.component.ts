@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnInit,
+  Output,
   signal,
   SimpleChanges,
   ViewEncapsulation,
@@ -17,6 +19,7 @@ import { FormatDatePostPipe } from '../../../pipes/format-date-post-pipe';
 import { CommentsComponent } from '../comments/comments.component';
 import { PostsService } from '../../../services/posts.service';
 import { MatDialog } from '@angular/material/dialog';
+import { PostFormComponent } from '../post-form/post-form.component';
 
 @Component({
   selector: 'app-post',
@@ -29,6 +32,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class PostComponent implements OnInit {
   @Input() post: Post = new Post();
   @Input() userRating: number = 0;
+  @Output() postUpdated = new EventEmitter<void>();
 
   readonly dialog = inject(MatDialog);
 
@@ -111,10 +115,27 @@ export class PostComponent implements OnInit {
     }
   }
 
+  // Open edit post dialog
+  editPost() {
+    const dialogRef = this.dialog.open(PostFormComponent, {
+      data: {
+        type: 'edit',
+        postId: this.post.PostID,
+        content: this.post.Content,
+        visibility: this.post.Visibility,
+      },
+      autoFocus: false,
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      const childComponent = dialogRef.componentInstance;
+      if (childComponent.updated) this.postUpdated.emit();
+    });
+  }
+
   // Open Comments Dialog
-  openDialog(postId: number) {
+  openComments() {
     const dialogRef = this.dialog.open(CommentsComponent, {
-      data: { postId: postId },
+      data: { postId: this.post.PostID },
       autoFocus: false,
     });
     dialogRef.afterClosed().subscribe(() => {
