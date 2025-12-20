@@ -65,6 +65,8 @@ body {
   overflow-y: scroll;
 }
 
+h1,
+h2,
 h3 {
   color: var(--primary-color);
   margin: 0 0 0.5em 0;
@@ -113,6 +115,31 @@ button:active {
   backdrop-filter: blur(13px);
 }
 
+/* FORM------------------------------------- */
+.form {
+  max-width: 20em;
+  padding: 2em;
+  margin: 6em auto 0 auto;
+}
+
+.form input,
+.form textarea,
+.form select {
+  background-color: var(--background-darker);
+  padding: var(--button-padding);
+  margin-top: 0.5em;
+}
+.form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.form form > div {
+  display: flex;
+  flex-direction: column;
+}
+
 /* MODAL/DIALOG----------------------------------------------------------------*/
 .modal {
   margin: auto;
@@ -120,6 +147,7 @@ button:active {
   border-radius: var(--border-radius);
   border: 3px solid var(--background-darker);
 }
+
 /* Ensures that the background screen remains unchanged when modal opens */
 .cdk-global-scrollblock {
   overflow: hidden !important;
@@ -167,6 +195,9 @@ option:hover {
 textarea {
   resize: none;
   height: 5em;
+}
+textarea::-webkit-scrollbar {
+  background: transparent;
 }
 input:focus,
 textarea:focus {
@@ -307,7 +338,8 @@ input:checked + .slider:before {
 }
 
 /* Your input keeps its natural size */
-.inputWrapper input {
+.inputWrapper input,
+.inputWrapper textarea {
   width: 100%;
   box-sizing: border-box;
 }
@@ -326,7 +358,8 @@ input:checked + .slider:before {
   transition: var(--transition);
 }
 
-.inputWrapper.error input {
+.inputWrapper.error input,
+.inputWrapper.error textarea {
   border-color: var(--secondary-color);
 }
 .inputWrapper.error .inputErrorMessage {

@@ -14,8 +14,8 @@ export class PostsService {
     return this.api.request('GET', `posts/${id}/${route}`);
   }
 
-  addPost(data: any): Observable<any> {
-    return this.api.request('POST', 'posts', data);
+  addPost(id: number, data: any): Observable<any> {
+    return this.api.request('POST', `posts/${id}`, data);
   }
 
   editPost(data: any): Observable<any> {

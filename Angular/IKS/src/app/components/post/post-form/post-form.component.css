@@ -1,0 +1,24 @@
+.modal {
+  width: 50em;
+  overflow: hidden;
+  border: 2px solid var(--background);
+  border-radius: var(--border-radius);
+}
+.modal > div {
+  padding: 0;
+}
+.modal:focus {
+  outline: none;
+}
+
+.charCounter {
+  color: var(--text-darker);
+  float: right;
+  user-select: none;
+  font-size: 0.9em;
+}
+
+button {
+  width: fit-content;
+  float: right;
+}

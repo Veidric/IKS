@@ -1,13 +1,28 @@
 module.exports = function (express, pool) {
   const postsRouter = express.Router();
 
-  postsRouter.route("/").get(async function (req, res) {
-    res.json({ message: "Posts route is working!" });
-  });
+  postsRouter
+    .route("/")
+    .get(async function (req, res) {
+      res.json({ message: "Posts route is working!" });
+    })
+    // Edit post
+    .put(async function (req, res) {
+      try {
+        await pool.query("call EditPost(?, ?, ?)", [
+          req.body.postId,
+          req.body.content,
+          req.body.visibility,
+        ]);
+        res.status(200).json({ message: "Success!" });
+      } catch (e) {
+        res.status(400).json({ message: e.message });
+      }
+    });
 
-  // Get posts for a user
   postsRouter
     .route("/:id")
+    // Get posts for a use
     .get(async function (req, res) {
       try {
         let [[rows]] = await pool.query("call GetPost(?)", [req.params.id]);
@@ -16,6 +31,7 @@ module.exports = function (express, pool) {
         res.status(400).json({ message: e.message });
       }
     })
+    // Create new post
     .post(async function (req, res) {
       try {
         await pool.query("call MakePost(?, ?, ?)", [

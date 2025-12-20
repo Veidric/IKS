@@ -7,7 +7,7 @@
 <div class="frontPageBar">
   <!-- TODO: Implement adding post functionality -->
   <div>
-    <button class="greenButton">New post</button>
+    <button class="greenButton" (click)="openDialog()">New post</button>
   </div>
 
   <!-- Filtering & Sorting -->
@@ -42,5 +42,9 @@
 
 <!-- POSTS -->
 @for(post of posts() | sortPosts: sortKey; track post.PostID) {
-<app-post [post]="post" [userRating]="ratingsMap().get(post.PostID) ?? 0" />
+<app-post
+  [post]="post"
+  [userRating]="ratingsMap().get(post.PostID) ?? 0"
+  (postUpdated)="refetchPosts()"
+/>
 }

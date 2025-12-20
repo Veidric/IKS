@@ -1,9 +1,17 @@
-import { Component, Input } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+} from '@angular/forms';
 
 import { PostsService } from '../../../services/posts.service';
 import { AuthService } from '../../../services/auth.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-post-form',
@@ -13,68 +21,47 @@ import { AuthService } from '../../../services/auth.service';
   imports: [CommonModule, ReactiveFormsModule],
 })
 export class PostFormComponent {
-  @Input() type: 'new' | 'edit' = 'new';
-  @Input() post: any = { Content: null, Visibility: 'public' };
+  readonly dialogRef = inject(MatDialogRef<PostFormComponent>);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
 
-  open = false;
-  isPending = false;
-  form!: FormGroup;
+  submitted: boolean = false;
+  updated: boolean = false;
 
-  constructor(
-    public fb: FormBuilder, // ← FIX: public
-    private postData: PostsService,
-    private auth: AuthService
-  ) {
-    this.form = this.fb.group({
-      content: [
-        this.post?.Content || '',
-        [Validators.required, Validators.minLength(1), Validators.maxLength(281)],
-      ],
-      visibility: [this.post?.Visibility || 'public'],
-    });
+  postFormGroup = new FormGroup({
+    content: new FormControl(this.data.content, [Validators.required, Validators.maxLength(281)]),
+    visibility: new FormControl(this.data.visibility, [Validators.required]),
+  });
+
+  get content() {
+    return this.postFormGroup.get('content');
   }
 
-  toggleOpen() {
-    this.open = !this.open;
-  }
+  constructor(private postsService: PostsService, private auth: AuthService) {}
 
   onSubmit() {
-    if (this.form.invalid) return;
-
-    this.isPending = true;
-    const vals = this.form.value;
-    const currentUser = this.auth.getUser();
-
-    if (this.type === 'new') {
-      this.postData
-        .addPost({
-          idKorisnik: currentUser.id,
-          content: vals.content,
-          visibility: vals.visibility,
-        })
-        .subscribe({
-          next: () => {
-            this.form.reset();
-            this.isPending = false;
-            this.open = false;
-          },
-          error: () => (this.isPending = false),
-        });
-    } else {
-      this.postData
-        .editPost({
-          idPost: this.post.PostID,
-          content: vals.content,
-          visibility: vals.visibility,
-        })
-        .subscribe({
-          next: () => {
-            this.form.reset();
-            this.isPending = false;
-            this.open = false;
-          },
-          error: () => (this.isPending = false),
-        });
+    this.submitted = true;
+    if (this.postFormGroup.invalid) return;
+    else {
+      if (this.data.type === 'create') {
+        this.postsService
+          .addPost(this.auth.getUser().id, this.postFormGroup.value)
+          .subscribe((res) => {
+            if (res.message === 'Success!') {
+              this.postFormGroup.reset();
+              this.dialogRef.close();
+            }
+          });
+      } else {
+        this.postsService
+          .editPost({ ...this.postFormGroup.value, postId: this.data.postId })
+          .subscribe((res) => {
+            if (res.message === 'Success!') {
+              this.updated = true;
+              this.postFormGroup.reset();
+              this.dialogRef.close();
+            }
+          });
+      }
     }
   }
 }
