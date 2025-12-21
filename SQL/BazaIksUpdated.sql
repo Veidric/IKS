@@ -477,7 +477,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProfilePosts`(idUser_ INT)
 BEGIN
-	SELECT p.id as PostID, p.Content, p.Visibility, p.DateOfPosting, SUM(r.Value) as Rating, kom.Numbers as Comments FROM post p
+	SELECT u.id as UserID, p.id as PostID, p.Content, p.Visibility, p.DateOfPosting, SUM(r.Value) as Rating, kom.Numbers as Comments FROM post p
 	LEFT OUTER JOIN user u ON u.id = p.idUser
     LEFT OUTER JOIN rating r ON r.idPost = p.id
     LEFT OUTER JOIN (SELECT c.idPost, COUNT(c.id) as Numbers FROM comment c GROUP BY c.idPost) kom ON kom.idPost = p.id
