@@ -30,20 +30,25 @@ export class InboxComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = this.auth.getUser() || {};
-    this.userId = user.id;
-    this.username = user.username;
+    const user = this.auth.getUser();
 
-    this.chatService.getChats(this.userId).subscribe({
-      next: (res: any) => {
-        const arr = Array.isArray(res) ? res : [];
-        this.chats = arr.filter((c: any) => c.Content);
+    if (user) {
+      this.userId = user.id;
+      this.username = user.username;
+
+      this.chatService.getChats(this.userId).subscribe({
+        next: (res: any) => {
+          const arr = Array.isArray(res) ? res : [];
+          this.chats = arr.filter((c: any) => c.Content);
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
+        },
+      });
+    } else {
         this.isLoading = false;
-      },
-      error: () => {
-        this.isLoading = false;
-      },
-    });
+    }
   }
 
   openChat(chat: any) {

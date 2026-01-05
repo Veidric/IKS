@@ -33,7 +33,7 @@ export class UserInfoComponent implements OnInit {
 
   followingStatus = false;
   isLoggedUser = false;
-  loggedUserId = 0;
+  loggedUserId:any = 0;
 
   constructor(
     private auth: AuthService,
@@ -45,7 +45,7 @@ export class UserInfoComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.loggedUserId = await this.auth.getUser().id;
+    this.loggedUserId = await this.auth.getUser()?.id;
     console.log(this.user);
     this.isLoggedUser = this.loggedUserId === this.user.id;
 

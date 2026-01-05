@@ -36,32 +36,38 @@ export class PostFormComponent {
     return this.postFormGroup.get('content');
   }
 
-  constructor(private postsService: PostsService, private auth: AuthService) {}
+  constructor(private postsService: PostsService, private auth: AuthService) { }
 
   onSubmit() {
     this.submitted = true;
     if (this.postFormGroup.invalid) return;
-    else {
-      if (this.data.type === 'create') {
-        this.postsService
-          .addPost(this.auth.getUser().id, this.postFormGroup.value)
-          .subscribe((res) => {
-            if (res.message === 'Success!') {
-              this.postFormGroup.reset();
-              this.dialogRef.close();
-            }
-          });
-      } else {
-        this.postsService
-          .editPost({ ...this.postFormGroup.value, postId: this.data.postId })
-          .subscribe((res) => {
-            if (res.message === 'Success!') {
-              this.updated = true;
-              this.postFormGroup.reset();
-              this.dialogRef.close();
-            }
-          });
-      }
+    
+    const user = this.auth.getUser();
+
+    if (!user) {
+      console.error('Cannot create post: User not found');
+      return;
+    }
+
+    if (this.data.type === 'create') {
+      this.postsService
+        .addPost(user.id, this.postFormGroup.value)
+        .subscribe((res) => {
+          if (res.message === 'Success!') {
+            this.postFormGroup.reset();
+            this.dialogRef.close();
+          }
+        });
+    } else {
+      this.postsService
+        .editPost({ ...this.postFormGroup.value, postId: this.data.postId })
+        .subscribe((res) => {
+          if (res.message === 'Success!') {
+            this.updated = true;
+            this.postFormGroup.reset();
+            this.dialogRef.close();
+          }
+        });
     }
   }
 }

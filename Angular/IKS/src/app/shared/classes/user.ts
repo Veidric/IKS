@@ -5,5 +5,8 @@ export class User {
   name = "";
   surename = "";
   DateOfBirth = "";
-  //isAdmin:number = 0;
+  IsAdmin:any = 0;
+
 }
+
+
