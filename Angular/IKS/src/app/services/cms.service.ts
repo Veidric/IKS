@@ -24,9 +24,9 @@ export class CmsService {
   updateUser(user: User): Observable<any> {
     const payload = {
       id: user.id,
-      Username: user.username,
-      Name: user.name,
-      Surname: user.surename,
+      Username: user.Username,
+      Name: user.Name,
+      Surname: user.Surname,
       DateOfBirth: user.DateOfBirth,
       IsAdmin: user.IsAdmin
     };

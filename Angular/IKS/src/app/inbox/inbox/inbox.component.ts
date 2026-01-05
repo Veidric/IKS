@@ -34,7 +34,7 @@ export class InboxComponent implements OnInit {
 
     if (user) {
       this.userId = user.id;
-      this.username = user.username;
+      this.username = user.Username;
 
       this.chatService.getChats(this.userId).subscribe({
         next: (res: any) => {

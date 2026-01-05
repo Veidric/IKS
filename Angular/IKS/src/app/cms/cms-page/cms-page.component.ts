@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CmsService } from '../../services/cms.service';
@@ -20,20 +20,36 @@ export class CmsPageComponent implements OnInit {
   editingUserId: number | null = null;
   editForm: User = new User();
 
-  // Changed from inject() to constructor injection
-  constructor(private cmsService: CmsService) {}
+  constructor(
+    private cmsService: CmsService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
   }
 
   loadUsers() {
+    this.isLoading = true;
     this.cmsService.getAllUsers().subscribe({
-      next: (data) => {
-        this.users = data;
+      next: (data: any) => {
+        console.log('API RESPONSE:', data);
+
+        if (Array.isArray(data) && Array.isArray(data[0])) {
+             this.users = data[0];
+        } else {
+             this.users = data; 
+        }
+
         this.isLoading = false;
+        
+        this.cdr.detectChanges(); 
       },
-      error: (err) => console.error('Error loading users:', err)
+      error: (err) => {
+        console.error('Error:', err);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -43,6 +59,7 @@ export class CmsPageComponent implements OnInit {
     this.cmsService.deleteUser(userId).subscribe({
       next: () => {
         this.users = this.users.filter(u => u.id !== userId);
+        this.cdr.detectChanges();
       },
       error: (err) => alert(err.error?.message || 'Delete failed')
     });
@@ -50,6 +67,7 @@ export class CmsPageComponent implements OnInit {
 
   startEdit(user: User) {
     this.editingUserId = user.id;
+  
     this.editForm = { ...user };
   }
 
@@ -59,14 +77,26 @@ export class CmsPageComponent implements OnInit {
   }
 
   saveUser() {
-    this.cmsService.updateUser(this.editForm).subscribe({
+    const payload = {
+      id: this.editForm.id,
+      Username: this.editForm.Username,
+      Name: this.editForm.Name,
+      Surname: this.editForm.Surname,
+      DateOfBirth: this.editForm.DateOfBirth,
+      IsAdmin: this.editForm.IsAdmin,
+      Password: this.editForm.Password || '' 
+    };
+
+    this.cmsService.updateUser(payload as any).subscribe({
       next: () => {
         const index = this.users.findIndex(u => u.id === this.editForm.id);
         if (index !== -1) {
-          this.users[index] = { ...this.editForm };
+          this.users[index] = { ...this.editForm }; 
         }
-        this.cancelEdit();
+        
         alert('User updated successfully!');
+        this.cancelEdit();
+        this.cdr.detectChanges(); 
       },
       error: (err) => alert(err.error?.message || 'Update failed')
     });

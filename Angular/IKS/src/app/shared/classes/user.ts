@@ -1,9 +1,9 @@
 export class User {
   id = 0;
-  username = "";
-  password = "";
-  name = "";
-  surename = "";
+  Username = "";
+  Password = "";
+  Name = "";
+  Surname = "";
   DateOfBirth = "";
   IsAdmin:any = 0;
 

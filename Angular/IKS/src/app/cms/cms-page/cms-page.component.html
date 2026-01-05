@@ -7,7 +7,7 @@
         <th>ID</th>
         <th>Username</th>
         <th>Name</th>
-        <th>Is Admin?</th>
+        <th>Date of Birth</th> <th>Is Admin?</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -17,8 +17,9 @@
           
           @if(editingUserId !== user.id) {
             <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.name }} {{ user.surename }}</td>
+            <td>{{ user.Username }}</td> 
+            <td>{{ user.Name }} {{ user.Surname }}</td>
+            <td>{{ user.DateOfBirth | date:'mediumDate' }}</td>
             <td>
               <span [class.admin-badge]="user.IsAdmin === 1">
                 {{ user.IsAdmin === 1 ? 'ADMIN' : 'USER' }}
@@ -33,11 +34,14 @@
           @else {
             <td>{{ user.id }}</td>
             <td>
-              <input [(ngModel)]="editForm.username" placeholder="Username">
+              <input [(ngModel)]="editForm.Username" placeholder="Username">
             </td>
             <td>
-              <input [(ngModel)]="editForm.name" placeholder="Name">
-              <input [(ngModel)]="editForm.surename" placeholder="Surname">
+              <input [(ngModel)]="editForm.Name" placeholder="Name">
+              <input [(ngModel)]="editForm.Surname" placeholder="Surname">
+            </td>
+            <td>
+              <input type="date" [(ngModel)]="editForm.DateOfBirth">
             </td>
             <td>
               <select [(ngModel)]="editForm.IsAdmin">

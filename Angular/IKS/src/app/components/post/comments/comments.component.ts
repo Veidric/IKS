@@ -64,7 +64,7 @@ export class CommentsComponent {
             ...comments,
             new Comment(
               user.id,
-              user.username,    
+              user.Username,    
               this.commentGroup.value.content!
             ),
           ]);

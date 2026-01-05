@@ -46,7 +46,7 @@ export class AuthService {
   setUsername(newName: string) {
     const current = this.currentUserSubject.value;
     if (current) {
-      current.username = newName;
+      current.Username = newName;
       this.setUser(current);
     }
   }

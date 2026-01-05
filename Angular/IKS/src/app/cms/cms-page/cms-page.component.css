@@ -6,7 +6,7 @@
 }
 
 h1 {
-  color: #333;
+  color: var(--primary-color);
   margin-bottom: 1.5rem;
   border-bottom: 2px solid #eee;
   padding-bottom: 0.5rem;
@@ -26,7 +26,8 @@ h1 {
 .cms-table td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1b1818;
+  color: #1b1818;
 }
 
 .cms-table th {
