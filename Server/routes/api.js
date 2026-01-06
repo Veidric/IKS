@@ -1,4 +1,4 @@
-module.exports = function (express, pool) {
+module.exports = function (express, pool, upload, root) {
   const apiRouter = express.Router();
 
   apiRouter.get("/", function (res) {
@@ -126,6 +126,16 @@ module.exports = function (express, pool) {
       res.status(400).json({ message: "Bad request" });
     }
   });
+
+  apiRouter.route("/upload").post(upload.single('file'), async function (req, res) {
+    
+    res.json(req.file.filename)
+  });
+
+  apiRouter.route("/images").post(async function (req, res) {
+    console.log(req.body.imageID)
+    res.sendFile('E:/Git Projects/IKS/Server/uploads/'+req.body.imageID + ".jpg")
+  })
 
   return apiRouter;
 };
