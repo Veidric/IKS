@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const config = require("./config");
 const mysql = require("mysql2/promise");
 const jwt = require("jsonwebtoken");
-
+const path = require("path");
 
 const multer  = require('multer')
 
@@ -19,11 +19,7 @@ const storage = multer.diskStorage({
   }
 })
 
-
 const upload = multer({ storage: storage });
-
-
-
 
 const pool = mysql.createPool(config.pool);
 
@@ -40,10 +36,10 @@ app.use(cors());
 const admRouter = require('./routes/admin')(express, pool, upload, jwt, config.secret);
 app.use('/api/admin', admRouter);
 
-const apiRouter = require("./routes/api")(express, pool, upload, root, jwt, config.secret);
+const apiRouter = require("./routes/api")(express, pool, upload, path);
 app.use("/api", apiRouter);
 
-const authRouter = require("./routes/auth")(express, pool, upload, jwt, config.secret);
+const authRouter = require("./routes/auth")(express, pool, jwt, config.secret);
 app.use("/api/auth", authRouter);
 
 //pokretanje servera na portu 8080, promjeniti u config.js ako je potrebno

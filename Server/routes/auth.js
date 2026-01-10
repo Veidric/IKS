@@ -19,6 +19,7 @@ module.exports = function(express, pool, jwt, secret) {
         
         try {
           delete req.body.id;
+          delete req.body.IsAdmin;
           console.log(req.body);
           await pool.query('call RegisterUser(?)', [Object.values(req.body)], function(error, results, fields) {
             res.status(200).json({message: "Status code of 200!"});

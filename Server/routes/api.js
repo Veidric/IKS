@@ -1,4 +1,4 @@
-module.exports = function (express, pool, upload, root) {
+module.exports = function (express, pool, upload, path) {
   const apiRouter = express.Router();
 
   apiRouter.get("/", function (res) {
@@ -115,11 +115,12 @@ module.exports = function (express, pool, upload, root) {
     }
   });
 
-  apiRouter.route("/editProfile").put(async function (req, res) {
+  apiRouter.route("/editProfile").put(upload.single('file'), async function (req, res) {
     try {
-      await pool.query("call EditProfile(?, ?)", [
+      await pool.query("call EditProfile(?, ?, ?)", [
         req.body.idKorisnik,
         req.body.username,
+        req.file.filename
       ]);
       res.status(200).json({ message: "Success!" });
     } catch (e) {
@@ -128,13 +129,12 @@ module.exports = function (express, pool, upload, root) {
   });
 
   apiRouter.route("/upload").post(upload.single('file'), async function (req, res) {
-    
-    res.json(req.file.filename)
+    res.status(200).json({ message: "Success!" });
+    //res.json(req.file.filename)
   });
 
   apiRouter.route("/images").post(async function (req, res) {
-    console.log(req.body.imageID)
-    res.sendFile('E:/Git Projects/IKS/Server/uploads/'+req.body.imageID + ".jpg")
+    res.sendFile(path.join(__dirname, '..', 'uploads', req.body.imageID))
   })
 
   return apiRouter;
