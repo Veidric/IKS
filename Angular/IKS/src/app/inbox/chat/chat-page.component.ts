@@ -88,8 +88,17 @@ export class ChatPageComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.form.invalid) return;
+
+    const user = this.auth.getUser();
+
+    if (!user) {
+      console.error('Cannot send message: User not found');
+      return;
+    }
+
     const content = this.form.controls['content'].value;
-    const user = this.auth.getUser() || {};
+
+
     const payload = {
       idChat: this.idChat,
       idKorisnik: user.id,

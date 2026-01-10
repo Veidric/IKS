@@ -1,0 +1,62 @@
+<div class="cms-container">
+  <h1>User Management</h1>
+
+  <table class="cms-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Date of Birth</th> <th>Is Admin?</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(user of users; track user.id) {
+        <tr>
+          
+          @if(editingUserId !== user.id) {
+            <td>{{ user.id }}</td>
+            <td>{{ user.Username }}</td> 
+            <td>{{ user.Name }} {{ user.Surname }}</td>
+            <td>{{ user.DateOfBirth | date:'mediumDate' }}</td>
+            <td>
+              <span [class.admin-badge]="user.IsAdmin === 1">
+                {{ user.IsAdmin === 1 ? 'ADMIN' : 'USER' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-edit" (click)="startEdit(user)">Edit</button>
+              <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
+            </td>
+          } 
+          
+          @else {
+            <td>{{ user.id }}</td>
+            <td>
+              <input [(ngModel)]="editForm.Username" placeholder="Username">
+            </td>
+            <td>
+              <input [(ngModel)]="editForm.Name" placeholder="Name">
+              <input [(ngModel)]="editForm.Surname" placeholder="Surname">
+            </td>
+            <td>
+              <input type="date" [(ngModel)]="editForm.DateOfBirth">
+            </td>
+            <td>
+              <select [(ngModel)]="editForm.IsAdmin">
+                <option [ngValue]="0">User</option>
+                <option [ngValue]="1">Admin</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn-save" (click)="saveUser()">Save</button>
+              <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            </td>
+          }
+
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

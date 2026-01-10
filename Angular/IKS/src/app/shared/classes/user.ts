@@ -1,9 +1,12 @@
 export class User {
   id = 0;
-  username = "";
-  password = "";
-  name = "";
-  surename = "";
+  Username = "";
+  Password = "";
+  Name = "";
+  Surname = "";
   DateOfBirth = "";
-  //isAdmin:number = 0;
+  IsAdmin:any = 0;
+
 }
+
+

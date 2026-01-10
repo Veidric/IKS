@@ -6,21 +6,37 @@ const morgan = require("morgan");
 const config = require("./config");
 const mysql = require("mysql2/promise");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+
+const multer  = require('multer')
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '.jpg') //Appending .jpg
+  }
+})
+
+const upload = multer({ storage: storage });
 
 const pool = mysql.createPool(config.pool);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const root = __dirname
+console.log(__dirname)
 app.use(morgan("dev"));
 
 //dozvoljavanje konekcije i postavke corsa
 app.use(cors());
 
-const admRouter = require('./routes/admin')(express, pool, jwt, config.secret);
+const admRouter = require('./routes/admin')(express, pool, upload, jwt, config.secret);
 app.use('/api/admin', admRouter);
 
-const apiRouter = require("./routes/api")(express, pool, jwt, config.secret);
+const apiRouter = require("./routes/api")(express, pool, upload, path);
 app.use("/api", apiRouter);
 
 const authRouter = require("./routes/auth")(express, pool, jwt, config.secret);

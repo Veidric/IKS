@@ -2,13 +2,28 @@
 <div>
   <nav>
     <a [routerLink]="['/feed']" [class]="{ activePage: pathname.includes('feed') }">Feed</a>
+    
     <a [routerLink]="['/inbox']" [class]="{ activePage: pathname.includes('inbox') }">
-      <span class="material-symbols-outlined icon"> inbox </span>Inbox</a
-    >
-    <a [routerLink]="['/profile']" [class]="{ activePage: pathname.includes('profile') }"
-      ><span class="material-symbols-outlined icon"> account_circle </span> Profile</a
-    >
-    <a (click)="logout()"><span class="material-symbols-outlined icon"> logout </span> Logout</a>
+      <span class="material-symbols-outlined icon"> inbox </span>Inbox
+    </a>
+
+    <a [routerLink]="['/profile']" [class]="{ activePage: pathname.includes('profile') }">
+      <span class="material-symbols-outlined icon"> account_circle </span> Profile
+    </a>
+
+    @if (authService.user$ | async; as user) {
+  
+  @if (user.IsAdmin === 1) {
+    <a [routerLink]="['/cms']">
+       <span class="material-symbols-outlined icon"> settings </span> CMS
+    </a>
+  }
+
+}
+
+    <a (click)="logout()">
+      <span class="material-symbols-outlined icon"> logout </span> Logout
+    </a>
   </nav>
 </div>
 }

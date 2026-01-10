@@ -19,6 +19,7 @@ module.exports = function(express, pool, jwt, secret) {
         
         try {
           delete req.body.id;
+          delete req.body.IsAdmin;
           console.log(req.body);
           await pool.query('call RegisterUser(?)', [Object.values(req.body)], function(error, results, fields) {
             res.status(200).json({message: "Status code of 200!"});
@@ -31,27 +32,35 @@ module.exports = function(express, pool, jwt, secret) {
   
     authRouter.route('/login').post(async function (req, res) {
         try {
-          let [rows] = await pool.query('SELECT * FROM user WHERE Username = ?', [req.body.username]);
-            if ([rows].length>0 && await bcrypt.compare(req.body.password, rows[0].Password)) {
-              const token = jwt.sign({
-                username:rows[0].username,
-                id:rows[0].id,
-            }, secret, {
-                expiresIn:3600
-            });
-            res.status(200).json({token:token, user: {
-              id:rows[0].id,
-              username:rows[0].Username
-            }});
-            }
-            else {
+            let [rows] = await pool.query('SELECT * FROM user WHERE Username = ?', [req.body.username]);
+            
+            if ([rows].length > 0 && await bcrypt.compare(req.body.password, rows[0].Password)) { 
+                const token = jwt.sign({
+                    username: rows[0].Username,
+                    id: rows[0].id,
+                    isAdmin: rows[0].IsAdmin 
+                }, secret, {
+                    expiresIn: 3600
+                });
+
+                res.status(200).json({
+                    token: token,
+                    user: {
+                        id: rows[0].id,
+                        username: rows[0].Username,
+                        IsAdmin: rows[0].IsAdmin,      
+                        name: rows[0].Name,            
+                        surename: rows[0].Surname,     
+                        DateOfBirth: rows[0].DateOfBirth 
+                    }
+                });
+
+            } else {
                 res.status(401).json({message: 'UNAUTHORIZED'});
             }
-          }
-          catch (e) {
+        } catch (e) {
             res.status(400).json({message: e.message});
-          }
+        }
     });
-
     return authRouter;
 }

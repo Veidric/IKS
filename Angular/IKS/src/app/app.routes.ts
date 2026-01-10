@@ -4,10 +4,11 @@ import { ChatPageComponent } from './inbox/chat/chat-page.component';
 import { ProfileResolver } from './resolvers/ProfileResolver';
 import { Feed } from './feed/feed';
 import { Auth } from './auth/auth/auth';
-import { AuthGuard } from './auth/auth/auth-guard';
+import { AuthGuard } from './guards/auth-guard';
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
-
+import { CmsPageComponent } from '../app/cms/cms-page/cms-page.component'; // Your CMS component
+import { adminGuard } from './guards/admin.guard';
 export const routes: Routes = [
   {
     path: 'auth',
@@ -16,6 +17,7 @@ export const routes: Routes = [
       { path: 'login', component: Login },
       { path: 'register', component: Register },
       { path: '**', redirectTo: 'login' },
+      
     ],
   },
   { path: 'feed', component: Feed, canActivate: [AuthGuard] },
@@ -27,5 +29,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   { path: 'inbox/chat/:id', component: ChatPageComponent, canActivate: [AuthGuard] },
+  { 
+    path: 'cms', 
+    component: CmsPageComponent, 
+    canActivate: [adminGuard]
+  },
   { path: '**', redirectTo: 'feed' },
+  
 ];
