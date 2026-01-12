@@ -1,62 +1,123 @@
 <div class="cms-container">
   <h1>User Management</h1>
 
+  <div class="alphabet-filter">
+    <button class="letter-btn" [class.active]="selectedLetter === ''" (click)="filterByLetter('')">ALL</button>
+    @for(letter of alphabet; track letter) {
+      <button class="letter-btn" [class.active]="selectedLetter === letter" (click)="filterByLetter(letter)">{{ letter }}</button>
+    }
+  </div>
+
+  <div class="controls-row">
+    <div class="search-container">
+      <input type="text" placeholder="Search users..." [(ngModel)]="searchTerm" (ngModelChange)="currentPage = 1">
+    </div>
+    <div class="page-size-selector">
+        <label>Show:</label>
+        <select [(ngModel)]="itemsPerPage" (change)="currentPage = 1">
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+        </select>
+    </div>
+  </div>
+
+  @if (users | filterUser:searchTerm:selectedLetter | sortUser:sortColumn:sortDirection; as processedUsers) {
+
   <table class="cms-table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Date of Birth</th> <th>Is Admin?</th>
+        <th (click)="sort('id')" class="sortable">
+          ID <span class="sort-icon">{{ sortColumn === 'id' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+        </th>
+        <th (click)="sort('Name')" class="sortable">
+          Full Name <span class="sort-icon">{{ sortColumn === 'Name' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+        </th>
+        <th (click)="sort('Username')" class="sortable">
+          Username <span class="sort-icon">{{ sortColumn === 'Username' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+        </th>
+        <th (click)="sort('IsAdmin')" class="sortable">
+          Role <span class="sort-icon">{{ sortColumn === 'IsAdmin' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
+        </th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      @for(user of users; track user.id) {
+      @for(user of processedUsers | paginateUser:currentPage:itemsPerPage; track user.id) {
         <tr>
-          
-          @if(editingUserId !== user.id) {
-            <td>{{ user.id }}</td>
-            <td>{{ user.Username }}</td> 
-            <td>{{ user.Name }} {{ user.Surname }}</td>
-            <td>{{ user.DateOfBirth | date:'mediumDate' }}</td>
-            <td>
-              <span [class.admin-badge]="user.IsAdmin === 1">
-                {{ user.IsAdmin === 1 ? 'ADMIN' : 'USER' }}
-              </span>
-            </td>
-            <td>
-              <button class="btn-edit" (click)="startEdit(user)">Edit</button>
-              <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
-            </td>
-          } 
-          
-          @else {
-            <td>{{ user.id }}</td>
-            <td>
-              <input [(ngModel)]="editForm.Username" placeholder="Username">
-            </td>
-            <td>
-              <input [(ngModel)]="editForm.Name" placeholder="Name">
-              <input [(ngModel)]="editForm.Surname" placeholder="Surname">
-            </td>
-            <td>
-              <input type="date" [(ngModel)]="editForm.DateOfBirth">
-            </td>
-            <td>
-              <select [(ngModel)]="editForm.IsAdmin">
-                <option [ngValue]="0">User</option>
-                <option [ngValue]="1">Admin</option>
-              </select>
-            </td>
-            <td>
-              <button class="btn-save" (click)="saveUser()">Save</button>
-              <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
-            </td>
-          }
+          <td>{{ user.id }}</td>
+          <td>{{ user.Name }} {{ user.Surname }}</td>
+          <td>{{ user.Username }}</td>
+          <td>
+            <span [class.admin-badge]="user.IsAdmin === 1">
+              {{ user.IsAdmin === 1 ? 'ADMIN' : 'USER' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-edit" (click)="openEditModal(user)">Edit</button>
+            <button class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
+          </td>
+        </tr>
+      }
 
+      @if(processedUsers.length === 0 && !isLoading) {
+        <tr>
+          <td colspan="5" class="empty-message">No users found.</td>
         </tr>
       }
     </tbody>
   </table>
+
+  @if(processedUsers.length > itemsPerPage) {
+    <div class="pagination-footer">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+      
+      <span class="page-info">
+        Page {{ currentPage }} of {{ (processedUsers.length / itemsPerPage) | number:'1.0-0' }}
+        </span>
+      
+      <button (click)="nextPage(processedUsers.length)" 
+              [disabled]="currentPage * itemsPerPage >= processedUsers.length">
+        Next
+      </button>
+    </div>
+  }
+
+  } </div>
+
+@if(isModalOpen) {
+<div class="modal-overlay">
+  <div class="modal-content">
+    <h2>Edit User</h2>
+    <div class="form-group">
+      <label>Username</label>
+      <input [(ngModel)]="editForm.Username" placeholder="Username">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name</label>
+        <input [(ngModel)]="editForm.Name" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label>Surname</label>
+        <input [(ngModel)]="editForm.Surname" placeholder="Surname">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" [(ngModel)]="editForm.DateOfBirth">
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select [(ngModel)]="editForm.IsAdmin">
+        <option [ngValue]="0">User</option>
+        <option [ngValue]="1">Admin</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button class="btn-save" (click)="saveUser()">Save Changes</button>
+    </div>
+  </div>
 </div>
+}
