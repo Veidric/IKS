@@ -80,7 +80,7 @@ export class Register {
         nameErr.innerHTML = '';
       }
     }
-    if (this.new.DateOfBirth == null && dateErr != null) {
+    if (this.new.dateOfBirth == null && dateErr != null) {
       f = false;
       dateErr.innerHTML = 'Potrebno je odabrati datum rođenja!';
     } else {
@@ -88,7 +88,7 @@ export class Register {
         dateErr.innerHTML = '';
       }
     }
-    if (this.new.surename == '' && surErr != null) {
+    if (this.new.surname == '' && surErr != null) {
       f = false;
       surErr.innerHTML = 'Potrebno je unjeti prezime korisnika!';
     } else {

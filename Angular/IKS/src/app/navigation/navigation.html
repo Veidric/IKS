@@ -5,7 +5,7 @@
     <a [routerLink]="['/inbox']" [class]="{ activePage: pathname.includes('inbox') }">
       <span class="material-symbols-outlined icon"> inbox </span>Inbox</a
     >
-    <a [routerLink]="['/profile']" [class]="{ activePage: pathname.includes('profile') }"
+    <a (click)="visitProfile()" [class]="{ activePage: pathname.includes('profile') }"
       ><span class="material-symbols-outlined icon"> account_circle </span> Profile</a
     >
     <a (click)="logout()"><span class="material-symbols-outlined icon"> logout </span> Logout</a>

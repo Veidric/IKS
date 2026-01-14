@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
 import { ChatPageComponent } from './inbox/chat/chat-page.component';
-import { ProfileResolver } from './resolvers/ProfileResolver';
 import { Feed } from './feed/feed';
 import { Auth } from './auth/auth/auth';
 import { AuthGuard } from './auth/auth/auth-guard';
@@ -20,10 +19,8 @@ export const routes: Routes = [
   },
   { path: 'feed', component: Feed, canActivate: [AuthGuard] },
   {
-    path: 'profile',
+    path: 'profile/:id',
     component: ProfilePageComponent,
-    children: [{ path: ':id', component: ProfilePageComponent }],
-    resolve: { data: ProfileResolver },
     canActivate: [AuthGuard],
   },
   { path: 'inbox/chat/:id', component: ChatPageComponent, canActivate: [AuthGuard] },

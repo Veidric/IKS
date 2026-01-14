@@ -1,0 +1,63 @@
+.profileInfoSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  gap: 1.5em;
+}
+
+/* PROFILE PICTURE 1st DIV*/
+.profilePicture {
+  height: 175px;
+  width: 175px;
+  background-color: var(--background-darker);
+  border-radius: var(--border-radius);
+}
+
+/* USER INFO 2nd DIV*/
+.userInfo h2 {
+  margin-bottom: 0.1em;
+}
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  height: 100%;
+}
+.followersInfo {
+  margin-top: 0.5em;
+  height: max-content;
+}
+.followersInfo button {
+  color: var(--text);
+}
+.followersInfo button:hover {
+  background-color: var(--background);
+  border-color: var(--text-darker);
+}
+/* PROFILE EDIT OR FOLLOW BUTTONS 3rd DIV*/
+.profileEditOrFollow {
+  margin-top: 0.5em;
+  flex-grow: 1;
+  display: flex;
+  justify-content: right;
+}
+.profileEditOrFollow button {
+  height: fit-content;
+  margin-right: 0.7em;
+}
+.unfollowButton {
+  background-color: var(--primary-color-trans);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: bold;
+}
+.unfollowButton:hover {
+  color: var(--text-darker);
+  border-color: var(--text-darker);
+  background-color: var(--text-darker-trans);
+}
+
+.editIcon {
+  margin-left: 0.3em;
+  transform: scale(1.2);
+}

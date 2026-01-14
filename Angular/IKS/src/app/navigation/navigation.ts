@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from './../services/auth.service';
+import { Component, signal } from '@angular/core';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 
@@ -11,10 +12,14 @@ import { filter } from 'rxjs';
 export class Navigation {
   pathname: string = '';
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.pathname = window.location.pathname;
     });
+  }
+
+  visitProfile() {
+    this.router.navigate(['/profile', this.authService.getUser().id]);
   }
 
   logout() {

@@ -1,93 +1,112 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { ProfileService } from '../../services/profile.service';
-import { ChatService } from '../../services/chat.service';
-import { MatDialog } from '@angular/material/dialog';
-import { UsersListModalComponent } from '../users-list-modal/users-list-modal.component';
-import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { Component, inject, Input, OnInit, signal, SimpleChanges } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ProfileService } from '../../services/profile.service';
+import { User } from '../../shared/classes/user';
+import { FormatDateProfilePipe } from '../../pipes/format-date-profile-pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { FollowersList } from '../followers-list/followers-list';
 
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, RouterModule, FormatDateProfilePipe],
   templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss'],
+  styleUrls: ['./user-info.component.css'],
 })
-export class UserInfoComponent implements OnInit {
-  @Input() user!: any;
-  @Input() followers!: any[];
-  @Input() following!: any[];
+export class UserInfoComponent {
+  private _userId!: number | null;
+  @Input()
+  set userId(value: number | null) {
+    this._userId = value;
+    this.fetchAll();
+  }
+  get userId(): number | null {
+    return this._userId;
+  }
+  @Input() isCurrentUserProfile!: boolean;
 
-  editing = false;
-  usernameControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(5),
-    Validators.maxLength(20),
-  ]);
+  user = signal<User>(new User());
 
-  followingStatus = false;
-  isLoggedUser = false;
-  loggedUserId = 0;
+  followersNumber = signal<number>(0);
+  followingNumber = signal<number>(0);
+  followers = signal<any[]>([]);
+  following = signal<any[]>([]);
 
-  constructor(
-    private auth: AuthService,
-    private profileService: ProfileService,
-    private chatService: ChatService,
-    private dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  isFollowing = signal<boolean>(false);
 
-  async ngOnInit() {
-    this.loggedUserId = await this.auth.getUser().id;
-    console.log(this.user);
-    this.isLoggedUser = this.loggedUserId === this.user.id;
+  readonly dialog = inject(MatDialog);
 
-    this.followingStatus = this.followers.some((f) => f.id === this.loggedUserId);
-    this.usernameControl.setValue(this.user.Username);
+  constructor(private profileService: ProfileService, private authService: AuthService) {}
+
+  fetchAll(): void {
+    this.getProfileInfo();
+    this.getFollowers();
+    this.getFollowing();
   }
 
-  toggleFollow() {
-    if (!this.followingStatus) {
-      this.profileService
-        .follow(this.loggedUserId, this.user.id)
-        .subscribe(() => (this.followingStatus = true));
-    } else {
-      this.profileService
-        .unfollow(this.loggedUserId, this.user.id)
-        .subscribe(() => (this.followingStatus = false));
-    }
-  }
-
-  messageUser() {
-    this.chatService.createChat(this.loggedUserId, this.user.id).subscribe((chat) => {
-      const id = chat[0].chatId;
-      this.router.navigate(['/inbox/chat', id], { state: { username: this.user.Username } });
+  getProfileInfo(): void {
+    this.profileService.getProfile(this.userId).subscribe((res) => {
+      this.user.update((user) => ({
+        ...user,
+        id: res.id,
+        username: res.Username,
+        password: undefined,
+        name: res.Name,
+        surname: res.Surname,
+        dateOfBirth: res.DateOfBirth,
+      }));
+      this.followersNumber.set(res.Followers);
+      this.followingNumber.set(res.Following);
     });
   }
 
-  saveUsername() {
-    this.profileService.editUsername(this.user.id, this.usernameControl.value!).subscribe(() => {
-      this.auth.setUsername(this.usernameControl.value!);
-      this.editing = false;
+  getFollowers(): void {
+    this.profileService.getFollowers(this.userId).subscribe((res) => {
+      this.followers.set(res);
+
+      if (
+        this.followers().find((follower) => {
+          return follower.id === this.authService.getUser().id;
+        })
+      ) {
+        this.isFollowing.set(true);
+      } else {
+        this.isFollowing.set(false);
+      }
     });
   }
 
-  openFollowers() {
-    this.dialog.open(UsersListModalComponent, {
-      data: { list: this.followers, title: `${this.followers.length} followers` },
+  getFollowing(): void {
+    this.profileService.getFollowing(this.userId).subscribe((res) => {
+      this.following.set(res);
     });
   }
 
-  openFollowing() {
-    this.dialog.open(UsersListModalComponent, {
-      data: { list: this.following, title: `${this.following.length} following` },
+  follow(): void {
+    if (this.userId === null) return;
+    this.profileService.follow(this.authService.getUser().id, this.userId).subscribe(() => {
+      this.isFollowing.set(true);
+      this.followersNumber.update((n) => n + 1);
+      this.getFollowers();
+    });
+  }
+
+  unfollow(): void {
+    if (this.userId === null) return;
+    this.profileService.unfollow(this.authService.getUser().id, this.userId).subscribe(() => {
+      this.isFollowing.set(false);
+      this.followersNumber.update((n) => n - 1);
+      this.getFollowers();
+    });
+  }
+
+  openDialog(type: string): void {
+    const dialogRef = this.dialog.open(FollowersList, {
+      data: type === 'followers' ? this.followers() : this.following(),
+      autoFocus: false,
     });
   }
 }

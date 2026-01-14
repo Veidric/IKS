@@ -3,42 +3,41 @@ import { ApiService } from './api.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService {
-
   constructor(private api: ApiService) {}
 
-  getProfile(id: string | number): Observable<any> {
-    return this.api.request('POST', 'profile', { idKorisnik: id });
+  getProfile(id: number | null): Observable<any> {
+    return this.api.request('GET', `profile/${id}`);
   }
 
-  getFollowers(id: string | number): Observable<any> {
-    return this.api.request('POST', 'followers', { idKorisnik: id });
+  getFollowers(id: number | null): Observable<any> {
+    return this.api.request('GET', `profile/followers/${id}`);
   }
 
-  getFollowing(id: string | number): Observable<any> {
-    return this.api.request('POST', 'followed', { idKorisnik: id });
+  getFollowing(id: number | null): Observable<any> {
+    return this.api.request('GET', `profile/following/${id}`);
   }
 
-  follow(idUser: number, idFollow: number): Observable<any> {
-    return this.api.request('POST', 'follow', {
-      idKorisnik: idUser,
-      idZapratiti: idFollow
+  follow(userId: number, userToFollowId: number): Observable<any> {
+    return this.api.request('POST', 'profile/follow', {
+      userId: userId,
+      userToFollowId: userToFollowId,
     });
   }
 
-  unfollow(idUser: number, idFollow: number): Observable<any> {
-    return this.api.request('DELETE', 'follow', {
-      idKorisnik: idUser,
-      idZapratiti: idFollow
+  unfollow(userId: number, userToUnfollowId: number): Observable<any> {
+    return this.api.request('DELETE', 'profile/follow', {
+      userId: userId,
+      userToUnfollowId: userToUnfollowId,
     });
   }
 
   editUsername(id: number, username: string): Observable<any> {
     return this.api.request('PUT', 'editProfile', {
       idKorisnik: id,
-      username
+      username,
     });
   }
 }

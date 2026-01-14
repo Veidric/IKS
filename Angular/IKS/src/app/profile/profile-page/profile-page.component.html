@@ -1,5 +1,9 @@
 <div>
-  <app-user-info [user]="user" [followers]="followers" [following]="following"> </app-user-info>
+  <app-user-info [userId]="userId()" [isCurrentUserProfile]="isCurrentUserProfile"></app-user-info>
 
-  <app-posts-list [route]="'profile'" [userId]="user.id"> </app-posts-list>
+  <app-posts-list
+    [route]="'profile'"
+    [userId]="userId()"
+    [canAddPost]="isCurrentUserProfile"
+  ></app-posts-list>
 </div>
