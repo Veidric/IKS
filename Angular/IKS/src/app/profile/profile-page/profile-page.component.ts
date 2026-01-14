@@ -25,6 +25,6 @@ export class ProfilePageComponent {
   }
 
   get isCurrentUserProfile() {
-    return this.userId() === this.authService.getUser().id;
+    return this.userId() === this.authService.getUser()?.id;
   }
 }

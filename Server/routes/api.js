@@ -1,4 +1,4 @@
-module.exports = function (express, pool) {
+module.exports = function (express, pool, upload, path) {
   const apiRouter = express.Router();
 
   apiRouter.get("/", function (res) {
@@ -11,52 +11,28 @@ module.exports = function (express, pool) {
   const profileRouter = require("./profile")(express, pool);
   apiRouter.use("/profile", profileRouter);
 
-  apiRouter.route("/chats").post(async function (req, res) {
-    try {
-      let [[rows]] = await pool.query("call GetChat(?)", [req.body.idKorisnik]);
-      res.status(200).json(rows);
-    } catch (e) {
-      res.status(400).json({ message: "Bad request" });
-    }
-  });
-
-  apiRouter.route("/chat").post;
-
-  apiRouter.route("/newchat").post(async function (req, res) {
-    try {
-      await pool.query("call MakeChat(?, ?)", [
-        req.body.idKorisnik1,
-        req.body.idKorisnik2,
-      ]);
-      res.status(200).json({ message: "Success!" });
-    } catch (e) {
-      res.status(400).json({ message: "Bad request" });
-    }
-  });
-
-  apiRouter.route("/sendmessage").post(async function (req, res) {
-    try {
-      await pool.query("call MakeMessage(?, ?, ?)", [
-        req.body.idChat,
-        req.body.idKorisnik,
-        req.body.content,
-      ]);
-      res.status(200).json({ message: "Success!" });
-    } catch (e) {
-      res.status(400).json({ message: "Bad request" });
-    }
-  });
-
   apiRouter.route("/editProfile").put(async function (req, res) {
     try {
-      await pool.query("call EditProfile(?, ?)", [
+      await pool.query("call EditProfile(?, ?, ?)", [
         req.body.idKorisnik,
         req.body.username,
+        req.file.filename,
       ]);
       res.status(200).json({ message: "Success!" });
     } catch (e) {
       res.status(400).json({ message: "Bad request" });
     }
+  });
+
+  apiRouter
+    .route("/upload")
+    .post(upload.single("file"), async function (req, res) {
+      res.status(200).json({ message: "Success!" });
+      //res.json(req.file.filename)
+    });
+
+  apiRouter.route("/images").post(async function (req, res) {
+    res.sendFile(path.join(__dirname, "..", "uploads", req.body.imageID));
   });
 
   return apiRouter;

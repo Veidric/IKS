@@ -69,7 +69,7 @@ export class UserInfoComponent {
 
       if (
         this.followers().find((follower) => {
-          return follower.id === this.authService.getUser().id;
+          return follower.id === this.authService.getUser()?.id;
         })
       ) {
         this.isFollowing.set(true);
@@ -86,8 +86,9 @@ export class UserInfoComponent {
   }
 
   follow(): void {
-    if (this.userId === null) return;
-    this.profileService.follow(this.authService.getUser().id, this.userId).subscribe(() => {
+    const loggedUserId = this.authService.getUser()?.id || null;
+    if (this.userId === null || loggedUserId === null) return;
+    this.profileService.follow(loggedUserId, this.userId).subscribe(() => {
       this.isFollowing.set(true);
       this.followersNumber.update((n) => n + 1);
       this.getFollowers();
@@ -95,8 +96,9 @@ export class UserInfoComponent {
   }
 
   unfollow(): void {
-    if (this.userId === null) return;
-    this.profileService.unfollow(this.authService.getUser().id, this.userId).subscribe(() => {
+    const loggedUserId = this.authService.getUser()?.id || null;
+    if (this.userId === null || loggedUserId === null) return;
+    this.profileService.unfollow(loggedUserId, this.userId).subscribe(() => {
       this.isFollowing.set(false);
       this.followersNumber.update((n) => n - 1);
       this.getFollowers();
@@ -104,7 +106,7 @@ export class UserInfoComponent {
   }
 
   openDialog(type: string): void {
-    const dialogRef = this.dialog.open(FollowersList, {
+    this.dialog.open(FollowersList, {
       data: type === 'followers' ? this.followers() : this.following(),
       autoFocus: false,
     });

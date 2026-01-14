@@ -5,4 +5,5 @@ export class User {
   name: string = '';
   surname: string = '';
   dateOfBirth: string = '';
+  isAdmin: number = 0;
 }

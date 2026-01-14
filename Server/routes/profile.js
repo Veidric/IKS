@@ -31,6 +31,7 @@ module.exports = function (express, pool) {
     }
   });
 
+  // Follow and Unfollow routes
   profileRouter
     .route("/follow")
     .post(async function (req, res) {

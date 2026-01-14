@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../shared/classes/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // @ts-ignore
-  private currentUser: User = JSON.parse(localStorage.getItem('user'));
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    JSON.parse(localStorage.getItem('user') || 'null')
+  );
+
+  public user$ = this.currentUserSubject.asObservable();
 
   constructor(private api: ApiService) {}
 
@@ -24,17 +27,18 @@ export class AuthService {
     return this.api.request('PUT', 'editProfile', data);
   }
 
-  getUser() {
-    return this.currentUser;
+  getUser(): User | null {
+    return this.currentUserSubject.value;
   }
 
-  setUser(user: any) {
-    this.currentUser = user;
+  setUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 
-  setUsername(newName: string) {
-    if (this.currentUser) {
-      this.currentUser.username = newName;
-    }
+  logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.currentUserSubject.next(null);
   }
 }

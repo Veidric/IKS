@@ -44,27 +44,30 @@ export class CommentsComponent {
     this.submitted = true;
     if (this.commentGroup.invalid) {
       return;
-    } else {
-      this.postsService
-        .addComment(this.data.postId, {
-          userId: this.auth.getUser().id,
-          content: this.commentGroup.value.content,
-        })
-        .subscribe((res) => {
-          if (res.message === 'Success!') {
-            this.comments.update((comments) => [
-              ...comments,
-              new Comment(
-                this.auth.getUser().id,
-                this.auth.getUser().username,
-                this.commentGroup.value.content!
-              ),
-            ]);
-            this.commentGroup.reset();
-            this.submitted = false;
-          }
-        });
     }
+
+    const user = this.auth.getUser();
+
+    if (!user) {
+      console.error('Cannot comment: User is not logged in');
+      return;
+    }
+
+    this.postsService
+      .addComment(this.data.postId, {
+        userId: user.id,
+        content: this.commentGroup.value.content,
+      })
+      .subscribe((res) => {
+        if (res.message === 'Success!') {
+          this.comments.update((comments) => [
+            ...comments,
+            new Comment(user.id, user.username, this.commentGroup.value.content!),
+          ]);
+          this.commentGroup.reset();
+          this.submitted = false;
+        }
+      });
   }
 
   visitProfile(id: number) {
