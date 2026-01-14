@@ -1,12 +1,9 @@
 export class User {
-  id = 0;
-  Username = "";
-  Password = "";
-  Name = "";
-  Surname = "";
-  DateOfBirth = "";
-  IsAdmin:any = 0;
-
+  id: number = 0;
+  password: string | undefined = undefined;
+  username: string = '';
+  name: string = '';
+  surname: string = '';
+  dateOfBirth: string = '';
+  isAdmin: number = 0;
 }
-
-

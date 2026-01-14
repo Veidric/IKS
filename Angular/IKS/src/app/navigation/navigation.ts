@@ -1,30 +1,46 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { AsyncPipe } from '@angular/common'; 
+import { toSignal } from '@angular/core/rxjs-interop';
+import { User } from '../shared/classes/user';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [RouterLink, AsyncPipe],
+  imports: [RouterLink],
   templateUrl: './navigation.html',
   styleUrl: './navigation.css',
 })
 export class Navigation {
   pathname: string = '';
-  
-  // Inject auth service
-  public authService = inject(AuthService); 
+  currentUser = signal<User | null>(null);
+  private userSub!: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       this.pathname = window.location.pathname;
     });
   }
 
+  ngOnInit() {
+    this.userSub = this.authService.user$.subscribe((user) => {
+      this.currentUser.set(user);
+    });
+  }
+
+  visitProfile() {
+    this.router.navigate(['/profile', this.authService.getUser()?.id]);
+  }
+
   logout() {
     this.authService.logout();
     window.location.reload();
+  }
+
+  ngOnDestroy() {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 }

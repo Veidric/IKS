@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { ProfilePageComponent } from './profile/profile-page/profile-page.component';
-import { ChatPageComponent } from './inbox/chat/chat-page.component';
-import { ProfileResolver } from './resolvers/ProfileResolver';
 import { Feed } from './feed/feed';
 import { Auth } from './auth/auth/auth';
 import { AuthGuard } from './guards/auth-guard';
@@ -17,23 +15,18 @@ export const routes: Routes = [
       { path: 'login', component: Login },
       { path: 'register', component: Register },
       { path: '**', redirectTo: 'login' },
-      
     ],
   },
   { path: 'feed', component: Feed, canActivate: [AuthGuard] },
   {
-    path: 'profile',
+    path: 'profile/:id',
     component: ProfilePageComponent,
-    children: [{ path: ':id', component: ProfilePageComponent }],
-    resolve: { data: ProfileResolver },
     canActivate: [AuthGuard],
   },
-  { path: 'inbox/chat/:id', component: ChatPageComponent, canActivate: [AuthGuard] },
-  { 
-    path: 'cms', 
-    component: CmsPageComponent, 
-    canActivate: [adminGuard]
+  {
+    path: 'cms',
+    component: CmsPageComponent,
+    canActivate: [adminGuard],
   },
   { path: '**', redirectTo: 'feed' },
-  
 ];

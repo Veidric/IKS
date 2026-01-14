@@ -20,7 +20,7 @@ export class Register {
   kontrolaUsername(username: string): boolean {
     if (this.users != null) {
       for (let e of this.users) {
-        if (e.Username == username) {
+        if (e.username == username) {
           return true;
         }
       }
@@ -37,15 +37,15 @@ export class Register {
     let nameErr = document.getElementById('nameErr');
     let dateErr = document.getElementById('dateErr');
     let surErr = document.getElementById('surErr');
-    if (this.new.Username == '' && usrErr != null) {
+    if (this.new.username == '' && usrErr != null) {
       f = false;
       usrErr.innerHTML = 'Potrebno je unjeti username korisnika!';
     } else {
-      if (this.new.Username.length < 4 && usrErr != null) {
+      if (this.new.username.length < 4 && usrErr != null) {
         f = false;
         usrErr.innerHTML = 'Username mora sadrzavati barem 4 znaka!';
       } else {
-        if (this.kontrolaUsername(this.new.Username) && usrErr != null) {
+        if (this.kontrolaUsername(this.new.username) && usrErr != null) {
           f = false;
           usrErr.innerHTML = 'Korisnik s tim usernameom vec postoji!';
         } else {
@@ -56,7 +56,7 @@ export class Register {
       }
     }
 
-    if (this.new.Password == '' && passErr != null) {
+    if (this.new.password == '' && passErr != null) {
       f = false;
       passErr.innerHTML = 'Potrebno je unjeti lozinku korisnika!';
     } else {
@@ -64,7 +64,7 @@ export class Register {
         passErr.innerHTML = '';
       }
     }
-    if (this.repp != this.new.Password && rpassErr != null) {
+    if (this.repp != this.new.password && rpassErr != null) {
       f = false;
       rpassErr.innerHTML = 'Potrebno je točno ponoviti lozinku!';
     } else {
@@ -72,7 +72,7 @@ export class Register {
         rpassErr.innerHTML = '';
       }
     }
-    if (this.new.Name == '' && nameErr != null) {
+    if (this.new.name == '' && nameErr != null) {
       f = false;
       nameErr.innerHTML = 'Potrebno je unjeti ime korisnika!';
     } else {
@@ -80,7 +80,7 @@ export class Register {
         nameErr.innerHTML = '';
       }
     }
-    if (this.new.DateOfBirth == null && dateErr != null) {
+    if (this.new.dateOfBirth == null && dateErr != null) {
       f = false;
       dateErr.innerHTML = 'Potrebno je odabrati datum rođenja!';
     } else {
@@ -88,7 +88,7 @@ export class Register {
         dateErr.innerHTML = '';
       }
     }
-    if (this.new.Surname == '' && surErr != null) {
+    if (this.new.surname == '' && surErr != null) {
       f = false;
       surErr.innerHTML = 'Potrebno je unjeti prezime korisnika!';
     } else {

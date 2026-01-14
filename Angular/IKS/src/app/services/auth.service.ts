@@ -7,7 +7,6 @@ import { User } from '../shared/classes/user';
   providedIn: 'root',
 })
 export class AuthService {
-
   private currentUserSubject = new BehaviorSubject<User | null>(
     JSON.parse(localStorage.getItem('user') || 'null')
   );
@@ -41,13 +40,5 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
-  }
-
-  setUsername(newName: string) {
-    const current = this.currentUserSubject.value;
-    if (current) {
-      current.Username = newName;
-      this.setUser(current);
-    }
   }
 }

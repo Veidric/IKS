@@ -1,0 +1,10 @@
+.modal {
+  margin: 0 !important;
+  overflow: hidden;
+}
+.followerDiv {
+  padding: var(--button-padding);
+}
+.modal > div:nth-child(odd) {
+  background-color: var(--background-darker);
+}

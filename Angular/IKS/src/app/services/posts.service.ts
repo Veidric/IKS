@@ -10,7 +10,7 @@ import { Comment } from '../shared/classes/comment';
 export class PostsService {
   constructor(private api: ApiService) {}
 
-  fetchPosts(route: string, id: number | string): Observable<any> {
+  fetchPosts(route: string, id: number | null): Observable<any> {
     return this.api.request('GET', `posts/${id}/${route}`);
   }
 
@@ -30,7 +30,7 @@ export class PostsService {
     return this.api.request('POST', `posts/comments/${postId}`, data);
   }
 
-  fetchPostRatings(id: number | string): Observable<Rating[]> {
+  fetchPostRatings(id: number | null): Observable<Rating[]> {
     return this.api.request('GET', `posts/${id}/ratings`);
   }
 

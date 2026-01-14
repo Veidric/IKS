@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from './../../services/auth.service';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProfileService } from '../../services/profile.service';
 
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UserInfoComponent } from '../user-info/user-info.component';
 import { PostsListComponent } from '../../components/post/post-list/post-list.component';
-import { User } from '../../shared/classes/user';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,24 +13,18 @@ import { User } from '../../shared/classes/user';
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.css'],
 })
-export class ProfilePageComponent implements OnInit {
-  curUser: User = new User();
-  loading = true;
-  user: User = new User();
-  followers: any[] = [];
-  following: any[] = [];
+export class ProfilePageComponent {
+  userId = signal<number>(0);
 
-  loaded: Promise<boolean> = Promise.resolve(false);
+  constructor(private route: ActivatedRoute, private authService: AuthService) {}
 
-  constructor(private route: ActivatedRoute, private profileService: ProfileService) {}
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.userId.set(Number(params.get('id')));
+    });
+  }
 
-  ngOnInit() {
-    // @ts-ignore
-    const resolved = this.route.snapshot.data['data'];
-
-    this.user = resolved.profile;
-    this.following = resolved.following;
-    this.followers = resolved.followers;
-    console.log(this.route.snapshot.data['data']);
+  get isCurrentUserProfile() {
+    return this.userId() === this.authService.getUser()?.id;
   }
 }

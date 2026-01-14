@@ -1,0 +1,8 @@
+<div class="modal">
+  @for(user of data; let i = $index; track i) {
+  <div class="followerDiv">
+    <div class="postLink" (click)="visitProfile(user.id)">{{ user.Username }}</div>
+    <div>{{ user.Name }} {{ user.Surname }}</div>
+  </div>
+  }
+</div>

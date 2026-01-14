@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../../app/shared/classes/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CmsService {
   private api = inject(ApiService);
@@ -24,13 +24,13 @@ export class CmsService {
   updateUser(user: User): Observable<any> {
     const payload = {
       id: user.id,
-      Username: user.Username,
-      Name: user.Name,
-      Surname: user.Surname,
-      DateOfBirth: user.DateOfBirth,
-      IsAdmin: user.IsAdmin
+      Username: user.username,
+      Name: user.name,
+      Surname: user.surname,
+      DateOfBirth: user.dateOfBirth,
+      IsAdmin: user.isAdmin,
     };
-    
+
     return this.api.request('PUT', 'admin/editUser', payload);
   }
 }

@@ -5,9 +5,11 @@
 </ng-container> -->
 
 <div class="frontPageBar">
-  <!-- TODO: Implement adding post functionality -->
+  <!-- New Post Button -->
   <div>
+    @if(canAddPost) {
     <button class="greenButton" (click)="openDialog()">New post</button>
+    }
   </div>
 
   <!-- Filtering & Sorting -->

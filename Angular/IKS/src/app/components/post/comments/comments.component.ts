@@ -32,7 +32,7 @@ export class CommentsComponent {
     private postsService: PostsService,
     private auth: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.postsService.fetchComments(this.data.postId).subscribe((res) => {
@@ -62,11 +62,7 @@ export class CommentsComponent {
         if (res.message === 'Success!') {
           this.comments.update((comments) => [
             ...comments,
-            new Comment(
-              user.id,
-              user.Username,    
-              this.commentGroup.value.content!
-            ),
+            new Comment(user.id, user.username, this.commentGroup.value.content!),
           ]);
           this.commentGroup.reset();
           this.submitted = false;

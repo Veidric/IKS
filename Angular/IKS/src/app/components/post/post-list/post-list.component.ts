@@ -1,4 +1,5 @@
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { AuthService } from './../../../services/auth.service';
+import { Component, inject, Input, OnInit, signal, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PostsService } from '../../../services/posts.service';
@@ -16,9 +17,18 @@ import { PostFormComponent } from '../post-form/post-form.component';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css'],
 })
-export class PostsListComponent implements OnInit {
+export class PostsListComponent {
+  private _userId!: number | null;
+  @Input()
+  set userId(value: number | null) {
+    this._userId = value;
+    this.refetchPosts();
+  }
+  get userId(): number | null {
+    return this._userId;
+  }
   @Input() route!: string;
-  @Input() userId!: number;
+  @Input() canAddPost!: boolean;
 
   posts = signal<Post[]>([]);
   ratingsMap = signal<Map<number, number>>(new Map());
@@ -29,10 +39,6 @@ export class PostsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   constructor(private postsService: PostsService) {}
-
-  ngOnInit(): void {
-    this.refetchPosts();
-  }
 
   refetchPosts() {
     this.loadPosts();
