@@ -5,11 +5,9 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-horizontal-divider',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './horizontal-divider.component.html',
-  styleUrls: ['./horizontal-divider.component.css']
+  styleUrls: ['./horizontal-divider.component.css'],
 })
 export class HorizontalDividerComponent {
   @Input() margin: string = '1em';

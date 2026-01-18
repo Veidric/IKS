@@ -23,10 +23,6 @@ export class AuthService {
     return this.api.request('POST', 'auth/register', data);
   }
 
-  editProfile(data: any): Observable<any> {
-    return this.api.request('PUT', 'editProfile', data);
-  }
-
   getUser(): User | null {
     return this.currentUserSubject.value;
   }

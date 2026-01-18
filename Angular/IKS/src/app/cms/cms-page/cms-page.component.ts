@@ -1,13 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CmsService } from '../../services/cms.service';
 import { User } from '../../shared/classes/user';
 
 // Import your new Pipes
 import { FilterUserPipe } from '../../pipes/filter-user.pipe';
-import { SortUserPipe } from '../../pipes/sort-user.pipe';
 import { PaginateUserPipe } from '../../pipes/paginate-user.pipe';
+import { SortUserPipe } from '../../pipes/sort-user.pipe';
 
 @Component({
   selector: 'app-cms-page',
@@ -36,7 +36,10 @@ export class CmsPageComponent implements OnInit {
   isModalOpen = false;
   editForm: User = new User();
 
-  constructor(private cmsService: CmsService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cmsService: CmsService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -126,7 +129,6 @@ export class CmsPageComponent implements OnInit {
       Surname: this.editForm.surname,
       DateOfBirth: this.editForm.dateOfBirth,
       IsAdmin: this.editForm.isAdmin,
-      Password: this.editForm.password || '',
     };
 
     this.cmsService.updateUser(payload as any).subscribe({

@@ -1,40 +1,5 @@
 .auth {
   max-width: 20em;
   padding: 2em;
-  margin: 6em auto 0 auto;
-}
-
-.auth input,
-.auth textarea,
-.auth select {
-  background-color: var(--background-darker);
-  padding: var(--button-padding);
-  margin-top: 0.5em;
-}
-.auth form {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
-.auth form > div {
-  display: flex;
-  flex-direction: column;
-}
-
-h1 {
-  color: var(--primary-color);
-  margin: 0;
-}
-
-.auth button {
-  text-align: center;
-  display: inline-block;
-  width: 100%;
-}
-
-.label {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  margin: 3em auto 0 auto;
 }

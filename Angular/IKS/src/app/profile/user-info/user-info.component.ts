@@ -1,13 +1,16 @@
-import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
+import { AuthService } from './../../services/auth.service';
 
+import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { FormatDateProfilePipe } from '../../pipes/format-date-profile-pipe';
 import { ProfileService } from '../../services/profile.service';
 import { User } from '../../shared/classes/user';
-import { FormatDateProfilePipe } from '../../pipes/format-date-profile-pipe';
-import { MatDialog } from '@angular/material/dialog';
+import { EditProfile } from '../edit-profile/edit-profile';
 import { FollowersList } from '../followers-list/followers-list';
+import { UploadImageForm } from '../upload-image-form/upload-image-form';
 
 @Component({
   selector: 'app-user-info',
@@ -37,9 +40,15 @@ export class UserInfoComponent {
 
   isFollowing = signal<boolean>(false);
 
+  profileImagePath = signal<SafeUrl | null>(null);
+
   readonly dialog = inject(MatDialog);
 
-  constructor(private profileService: ProfileService, private authService: AuthService) {}
+  constructor(
+    private profileService: ProfileService,
+    private authService: AuthService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   fetchAll(): void {
     this.getProfileInfo();
@@ -60,6 +69,11 @@ export class UserInfoComponent {
       }));
       this.followersNumber.set(res.Followers);
       this.followingNumber.set(res.Following);
+
+      this.profileService.getProfileImage(res.id).subscribe((res) => {
+        const imageURL = URL.createObjectURL(res);
+        this.profileImagePath.set(this.sanitizer.bypassSecurityTrustUrl(imageURL));
+      });
     });
   }
 
@@ -105,10 +119,34 @@ export class UserInfoComponent {
     });
   }
 
-  openDialog(type: string): void {
+  openUsersList(type: string): void {
     this.dialog.open(FollowersList, {
       data: type === 'followers' ? this.followers() : this.following(),
       autoFocus: false,
     });
+  }
+
+  editProfile(): void {
+    this.dialog
+      .open(EditProfile, {
+        data: this.user(),
+        autoFocus: false,
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.getProfileInfo();
+      });
+  }
+
+  changeProfileImage(): void {
+    this.dialog
+      .open(UploadImageForm, {
+        data: this.user(),
+        autoFocus: false,
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.getProfileInfo();
+      });
   }
 }

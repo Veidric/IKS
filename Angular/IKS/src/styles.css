@@ -10,6 +10,7 @@ body {
   --secondary-color: #b1374c;
   --background: #303036;
   --background-darker: #242428;
+  --background-darker-trans: #2424288b;
   --text: #f4f4f5;
   --text-darker: #9f9fa8;
   --text-darker-trans: #9f9fa843;
@@ -129,6 +130,9 @@ button:active {
   padding: var(--button-padding);
   margin-top: 0.5em;
 }
+.form button {
+  margin-top: 0.5em;
+}
 .form form {
   display: flex;
   flex-direction: column;
@@ -146,6 +150,25 @@ button:active {
   background-color: var(--background);
   border-radius: var(--border-radius);
   border: 3px solid var(--background-darker);
+}
+.modal:focus {
+  outline: none;
+}
+
+.formModal {
+  width: 50em;
+  overflow: hidden;
+  border: 2px solid var(--background);
+  border-radius: var(--border-radius);
+}
+
+.formModal > div {
+  padding: 0;
+}
+
+.submitButton {
+  width: fit-content;
+  margin-top: 0.7em;
 }
 
 /* Ensures that the background screen remains unchanged when modal opens */
@@ -242,6 +265,18 @@ label {
   background-color: var(--primary-color-trans);
 }
 
+.grayButton {
+  background-color: var(--text-darker);
+  color: var(--background-darker);
+  font-weight: bold;
+  border-color: var(--background);
+}
+.grayButton:hover {
+  background-color: var(--background);
+  border-color: var(--text-darker);
+  color: var(--text-darker);
+}
+
 .darkerButton {
   background-color: var(--background-darker);
   border: 0;
@@ -270,6 +305,32 @@ label {
   border-left-width: 0;
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
+}
+
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  gap: 0.6em;
+}
+
+.fileInput {
+  border-style: dashed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.fileInput:active {
+  transform: scale(1);
+}
+.fileSelected {
+  color: var(--text);
+  background-color: var(--background-darker);
+  border-color: var(--text);
+}
+
+button span {
+  transform: scale(0.9);
 }
 
 /*Input switch*/
@@ -339,7 +400,8 @@ input:checked + .slider:before {
 
 /* Your input keeps its natural size */
 .inputWrapper input,
-.inputWrapper textarea {
+.inputWrapper textarea,
+.inputWrapper button {
   width: 100%;
   box-sizing: border-box;
 }

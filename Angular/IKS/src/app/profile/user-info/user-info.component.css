@@ -9,8 +9,40 @@
 .profilePicture {
   height: 175px;
   width: 175px;
-  background-color: var(--background-darker);
+  background: var(--background-darker);
   border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  position: relative;
+}
+.profilePicture img {
+  width: 100%;
+}
+
+.changeImageOverlay {
+  background: var(--background-darker-trans);
+  color: var(--text);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.changeImageOverlay span {
+  transform: scale(1.6);
+  transition: var(--transition);
+}
+.profilePicture:hover .changeImageOverlay {
+  opacity: 1;
+}
+.profilePicture:hover span {
+  transform: scale(1.6) rotate(-10deg);
 }
 
 /* USER INFO 2nd DIV*/

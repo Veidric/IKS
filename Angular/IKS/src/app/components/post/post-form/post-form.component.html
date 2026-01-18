@@ -1,6 +1,6 @@
-<div class="modal form">
+<div class="modal form formModal">
   <form [formGroup]="postFormGroup" (ngSubmit)="onSubmit()">
-    <h1>{{ data.type === 'create' ? 'New post' : 'Edit Post' }}</h1>
+    <h2>{{ data.type === 'create' ? 'New post' : 'Edit Post' }}</h2>
     <div>
       <div class="label">
         <label for="content">Content</label>
@@ -18,6 +18,6 @@
         <option value="private">Private</option>
       </select>
     </div>
-    <button type="submit" class="greenButton">Save</button>
+    <button type="submit" class="greenButton submitButton">Save</button>
   </form>
 </div>

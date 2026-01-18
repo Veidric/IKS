@@ -13,7 +13,7 @@
     <form [formGroup]="commentGroup" (ngSubmit)="submitComment()">
       <div class="inputWrapper" [class.error]="content?.invalid && submitted">
         <input type="text" formControlName="content" placeholder="Comment" />
-        <span class="inputErrorMessage">Comment needs to have between 1 and 256 characters</span>
+        <span class="inputErrorMessage">{{ errorMessage('content') }}</span>
       </div>
       <button type="submit" class="greenButton">Submit</button>
     </form>

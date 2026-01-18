@@ -6,6 +6,7 @@ import { PostsService } from '../../../services/posts.service';
 import { Comment } from '../../../shared/classes/comment';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { CustomValidators } from '../../../shared/custom-validators';
 
 @Component({
   selector: 'app-comments',
@@ -19,7 +20,11 @@ export class CommentsComponent {
   readonly data = inject<any>(MAT_DIALOG_DATA);
 
   commentGroup = new FormGroup({
-    content: new FormControl('', [Validators.required, Validators.maxLength(256)]),
+    content: new FormControl('', [
+      Validators.required,
+      CustomValidators.leadingWhitespaceValidation,
+      Validators.maxLength(256),
+    ]),
   });
   get content() {
     return this.commentGroup.get('content');
@@ -68,6 +73,10 @@ export class CommentsComponent {
           this.submitted = false;
         }
       });
+  }
+
+  errorMessage(controlName: string): string {
+    return CustomValidators.getErrorMessage(this.commentGroup, controlName);
   }
 
   visitProfile(id: number) {

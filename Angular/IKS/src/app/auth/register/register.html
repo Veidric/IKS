@@ -1,23 +1,100 @@
-<div>
-  Username:<br />
-  <input type="text" [(ngModel)]="new.username" /><span id="userErr"></span>
-  <br />
-  Password:<br />
-  <input type="password" [(ngModel)]="new.password" /><span id="passErr"></span>
-  <br />
-  Repeat Password:<br />
-  <input type="password" [(ngModel)]="repp" /><span id="rpassErr"></span>
-  <br />
-  Name:<br />
-  <input type="text" [(ngModel)]="new.name" /><span id="nameErr"></span>
-  <br />
-  Surename:<br />
-  <input type="text" [(ngModel)]="new.surname" /><span id="surErr"></span>
-  <br />
-  E-Mail:<br />
-  <input type="date" [(ngModel)]="new.dateOfBirth" required /><span id="dateErr"></span>
-  <br />
-</div>
-<button class="reg" (click)="addUser()">Register!</button><br />
+<div class="form auth">
+  <form [formGroup]="registerFormGroup" (ngSubmit)="register()">
+    <div class="authForm">
+      <h1>Register</h1>
 
-<a [routerLink]="['/login']">Back to login</a>
+      <!-- Username -->
+      <div>
+        <div class="label">
+          <label for="username">Username</label>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.get('username')?.invalid && submitted"
+        >
+          <input formControlName="username" />
+          <span class="inputErrorMessage">{{ errorMessage('username') }}</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <div>
+          <div class="label"><label for="password">Password</label></div>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.get('password')?.invalid && submitted"
+        >
+          <input formControlName="password" type="password" />
+          <span class="inputErrorMessage">{{ errorMessage('password') }}</span>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div>
+        <div>
+          <div class="label"><label for="confirmPassword">Confirm password</label></div>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.hasError('passwordMismatch') && submitted"
+        >
+          <input formControlName="confirmPassword" type="password" />
+          @if (registerFormGroup.hasError('passwordMismatch') && submitted) {
+            <span class="inputErrorMessage">Needs to be the same value as password</span>
+          }
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div>
+        <div class="label">
+          <label for="name">Name</label>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.get('name')?.invalid && submitted"
+        >
+          <input formControlName="name" />
+          <span class="inputErrorMessage">{{ errorMessage('name') }}</span>
+        </div>
+      </div>
+
+      <!-- Surname -->
+      <div>
+        <div class="label">
+          <label for="surname">Surname</label>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.get('surname')?.invalid && submitted"
+        >
+          <input formControlName="surname" />
+          <span class="inputErrorMessage">{{ errorMessage('surname') }}</span>
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div>
+        <div class="label">
+          <label for="dateOfBirth">Date of Birth</label>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="registerFormGroup.get('dateOfBirth')?.invalid && submitted"
+        >
+          <input type="date" formControlName="dateOfBirth" />
+          <span class="inputErrorMessage">{{ errorMessage('dateOfBirth') }}</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="buttonRow">
+          <button type="submit " class="greenButton submitButton">Register</button>
+          <button class="grayButton" [routerLink]="['/login']">Back to login</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
