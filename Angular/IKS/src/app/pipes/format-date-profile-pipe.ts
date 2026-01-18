@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { format, parseISO } from 'date-fns';
+import { DateFormating } from '../shared/date-formating';
 
 @Pipe({
   name: 'formatDateProfile',
@@ -9,7 +9,6 @@ export class FormatDateProfilePipe implements PipeTransform {
     if (!input) {
       return '';
     }
-    const date = parseISO(input);
-    return format(date, 'dd.MM.yyyy.');
+    return DateFormating.formatDateForDisplay(input);
   }
 }

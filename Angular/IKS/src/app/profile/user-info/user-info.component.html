@@ -1,5 +1,15 @@
 <div class="section profileInfoSection">
-  <div class="profilePicture"></div>
+  <!-- Profile picture -->
+  <div class="profilePicture">
+    <img [src]="profileImagePath()" alt="Profile Picture" />
+    @if (isCurrentUserProfile) {
+      <div class="changeImageOverlay" (click)="changeProfileImage()">
+        <span class="material-symbols-outlined"> replace_image </span>
+      </div>
+    }
+  </div>
+
+  <!-- User info -->
   <div class="userInfo">
     <h2>{{ user().username }}</h2>
     <div style="font-weight: bold">{{ user().name }} {{ user().surname }}</div>
@@ -8,23 +18,25 @@
       {{ user().dateOfBirth | formatDateProfile }}
     </div>
     <div class="followersInfo buttonGroup">
-      <button (click)="openDialog('followers')">
+      <button (click)="openUsersList('followers')">
         Followers:&nbsp;<span style="font-weight: bold">{{ followersNumber() }}</span>
       </button>
-      <button (click)="openDialog('following')">
+      <button (click)="openUsersList('following')">
         Following:&nbsp;<span style="font-weight: bold">{{ followingNumber() }}</span>
       </button>
     </div>
   </div>
+
+  <!-- Edit profile or Follow/Unfollow buttons -->
   <div class="profileEditOrFollow">
-    @if(isCurrentUserProfile){
-    <button class="greenButton">
-      Edit Profile <span class="material-symbols-outlined editIcon"> edit </span>
-    </button>
-    }@else if(isFollowing()){
-    <button (click)="unfollow()" class="unfollowButton">Unfollow</button>
-    }@else{
-    <button (click)="follow()" class="greenButton">Follow</button>
+    @if (isCurrentUserProfile) {
+      <button class="greenButton" (click)="editProfile()">
+        Edit Profile <span class="material-symbols-outlined editIcon"> edit </span>
+      </button>
+    } @else if (isFollowing()) {
+      <button (click)="unfollow()" class="unfollowButton">Unfollow</button>
+    } @else {
+      <button (click)="follow()" class="greenButton">Follow</button>
     }
   </div>
 </div>

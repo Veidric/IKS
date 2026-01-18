@@ -1,0 +1,55 @@
+<div class="modal form formModal">
+  <form [formGroup]="userFormGroup" (ngSubmit)="onSubmit()">
+    <h2>Edit Profile</h2>
+
+    <!-- Username -->
+    <div>
+      <div class="label">
+        <label for="username">Username</label>
+      </div>
+      <div class="inputWrapper" [class.error]="userFormGroup.get('username')?.invalid && submitted">
+        <input formControlName="username" />
+        <span class="inputErrorMessage">{{ errorMessage('username') }}</span>
+      </div>
+    </div>
+
+    <!-- Name -->
+    <div>
+      <div class="label">
+        <label for="name">Name</label>
+      </div>
+      <div class="inputWrapper" [class.error]="userFormGroup.get('name')?.invalid && submitted">
+        <input formControlName="name" />
+        <span class="inputErrorMessage">{{ errorMessage('name') }}</span>
+      </div>
+    </div>
+
+    <!-- Surname -->
+    <div>
+      <div class="label">
+        <label for="surname">Surname</label>
+      </div>
+      <div class="inputWrapper" [class.error]="userFormGroup.get('surname')?.invalid && submitted">
+        <input formControlName="surname" />
+        <span class="inputErrorMessage">{{ errorMessage('surname') }}</span>
+      </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div>
+      <div class="label">
+        <label for="dateOfBirth">Date of Birth</label>
+      </div>
+      <div
+        class="inputWrapper"
+        [class.error]="userFormGroup.get('dateOfBirth')?.invalid && submitted"
+      >
+        <input type="date" formControlName="dateOfBirth" />
+        <span class="inputErrorMessage">{{ errorMessage('dateOfBirth') }}</span>
+      </div>
+    </div>
+
+    <!-- Save Changes Button -->
+    <button type="submit" class="greenButton submitButton">Save Changes</button>
+  </form>
+</div>

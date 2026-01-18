@@ -24,6 +24,6 @@ export class FormatDatePostPipe implements PipeTransform {
     const days = differenceInDays(now, date);
     if (days < 10) return `${days} days ago`;
 
-    return format(date, 'dd.MM.yyyy. HH:mm');
+    return format(date, 'yyyy-MM-dd HH:mm');
   }
 }

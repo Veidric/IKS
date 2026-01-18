@@ -1,15 +1,41 @@
-<div>
-  <h1>Log In</h1>
-  <div>
-    Username:<br />
-    <input type="text" [(ngModel)]="tmpusr" /><br />
-    Password:<br />
-    <input type="password" [(ngModel)]="tmppass" />
-  </div>
-  <span id="errorMessage">{{ errorMessage }}</span
-  ><br />
+<div class="form auth">
+  <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+    <div class="authForm">
+      <h1>Log In</h1>
+      <div>
+        <div class="label">
+          <label for="username">Username</label>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="loginFormGroup.get('username')?.invalid && submitted"
+        >
+          <input formControlName="username" />
+          <span class="inputErrorMessage">{{ errorMessage('username') }}</span>
+        </div>
+      </div>
 
-  <button (click)="login()" class="login">Log In</button>
-  <app-horizontal-divider></app-horizontal-divider>
-  <button [routerLink]="['/auth/register']">Register</button>
+      <div>
+        <div>
+          <div class="label"><label for="password">Password</label></div>
+        </div>
+        <div
+          class="inputWrapper"
+          [class.error]="loginFormGroup.get('password')?.invalid && submitted"
+        >
+          <input formControlName="password" type="password" />
+          <span class="inputErrorMessage">{{ errorMessage('password') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <app-horizontal-divider [margin]="'0.5em'"></app-horizontal-divider>
+
+    <div>
+      <div class="buttonRow">
+        <button type="submit" class="greenButton">Log In</button>
+        <button [routerLink]="['/auth/register']" class="grayButton">Register</button>
+      </div>
+    </div>
+  </form>
 </div>

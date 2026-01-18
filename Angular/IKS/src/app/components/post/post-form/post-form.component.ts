@@ -1,17 +1,11 @@
-import { bootstrapApplication } from '@angular/platform-browser';
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  Validators,
-  ReactiveFormsModule,
-  FormGroup,
-  FormControl,
-} from '@angular/forms';
+import { Validators, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 
 import { PostsService } from '../../../services/posts.service';
 import { AuthService } from '../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CustomValidators } from '../../../shared/custom-validators';
 
 @Component({
   selector: 'app-post-form',
@@ -36,12 +30,12 @@ export class PostFormComponent {
     return this.postFormGroup.get('content');
   }
 
-  constructor(private postsService: PostsService, private auth: AuthService) { }
+  constructor(private postsService: PostsService, private auth: AuthService) {}
 
   onSubmit() {
     this.submitted = true;
     if (this.postFormGroup.invalid) return;
-    
+
     const user = this.auth.getUser();
 
     if (!user) {
@@ -50,14 +44,12 @@ export class PostFormComponent {
     }
 
     if (this.data.type === 'create') {
-      this.postsService
-        .addPost(user.id, this.postFormGroup.value)
-        .subscribe((res) => {
-          if (res.message === 'Success!') {
-            this.postFormGroup.reset();
-            this.dialogRef.close();
-          }
-        });
+      this.postsService.addPost(user.id, this.postFormGroup.value).subscribe((res) => {
+        if (res.message === 'Success!') {
+          this.postFormGroup.reset();
+          this.dialogRef.close();
+        }
+      });
     } else {
       this.postsService
         .editPost({ ...this.postFormGroup.value, postId: this.data.postId })

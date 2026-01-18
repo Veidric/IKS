@@ -1,39 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
-import { User } from '../../shared/classes/user';
-import { AuthService } from '../../services/auth.service';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { HorizontalDividerComponent } from '../../components/horizontal-divider/horizontal-divider.component';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../shared/classes/user';
+import { CustomValidators } from '../../shared/custom-validators';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterModule, HorizontalDividerComponent],
+  imports: [ReactiveFormsModule, RouterModule, HorizontalDividerComponent],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   users: User[] = [];
-  tmpusr = '';
-  tmppass = '';
-  jao: any;
-  errorMessage: string = '';
+  submitted: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+  ) {}
 
-  async login() {
-    let f = true;
+  loginFormGroup = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      CustomValidators.leadingWhitespaceValidation,
+      CustomValidators.usernameValidation,
+      Validators.minLength(3),
+      Validators.maxLength(45),
+    ]),
+    password: new FormControl('', [Validators.required]),
+  });
 
-    let obj = { username: this.tmpusr, password: this.tmppass };
-    this.authService.loginUser(obj).subscribe((jao) => {
-      localStorage.setItem('user', JSON.stringify(jao['user']));
-      localStorage.setItem('token', JSON.stringify(jao['token']));
-      this.router.navigate(['/feed']);
-      this.authService.setUser(jao['user']);
+  errorMessage(controlName: string) {
+    return CustomValidators.getErrorMessage(this.loginFormGroup, controlName);
+  }
+
+  login() {
+    this.submitted = true;
+    if (this.loginFormGroup.invalid) return;
+    this.authService.loginUser(this.loginFormGroup.value).subscribe({
+      next: (res) => {
+        localStorage.setItem('user', JSON.stringify(res['user']));
+        localStorage.setItem('token', JSON.stringify(res['token']));
+        this.router.navigate(['/feed']);
+        this.authService.setUser(res['user']);
+      },
+      error: (res) => {
+        const errorMessage = res.status === 401 ? 'Wrong password' : "User doesn't exist";
+        alert(errorMessage);
+      },
     });
-
-    if (f) {
-      this.errorMessage = 'Incorrect username or password';
-    }
   }
 }

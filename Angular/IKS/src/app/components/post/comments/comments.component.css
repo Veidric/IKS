@@ -1,3 +1,7 @@
+.modal {
+  background-color: var(--background-darker);
+}
+
 .commentForm form {
   background-color: var(--background-darker);
   display: flex;
@@ -32,7 +36,7 @@
   padding: var(--button-padding);
 }
 .comments > div:nth-child(odd) {
-  background-color: var(--background-darker);
+  background: var(--background) !important;
 }
 
 .commentContent {

@@ -1,0 +1,40 @@
+<div class="modal form formModal">
+  <form>
+    <h2>Profile Image</h2>
+
+    <!-- Image upload -->
+    <div>
+      <div class="label"><label for="profileImage">Upload new image</label></div>
+      <div class="inputWrapper">
+        <button
+          type="button"
+          class="fileInput"
+          [class.fileSelected]="selectedImage !== null"
+          (click)="imageInput.click()"
+        >
+          @if (selectedImage?.name) {
+            {{ selectedImage?.name }} <span class="material-symbols-outlined"> image </span>
+          } @else {
+            Select image<span class="material-symbols-outlined"> image_arrow_up </span>
+          }
+        </button>
+      </div>
+
+      <input
+        type="file"
+        (change)="onImageSelected($event)"
+        style="display: none"
+        accept="image/*"
+        #imageInput
+      />
+    </div>
+
+    <!-- Buttons -->
+    <div>
+      <div class="buttonRow">
+        <button class="greenButton" (click)="onSubmit()">Submit</button>
+        <button class="grayButton" (click)="resetImage()">Reset to default image</button>
+      </div>
+    </div>
+  </form>
+</div>

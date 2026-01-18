@@ -14,22 +14,16 @@ module.exports = function (express, pool, jwt, secret) {
     }
 
     try {
-      await pool.query(
-        "call RegisterUser(?, ?, ?, ?, ?);",
-        [
-          req.body.username,
-          req.body.password,
-          req.body.name,
-          req.body.surname,
-          req.body.dateOfBirth,
-        ],
-        function (error, results, fields) {
-          res.status(200).json({ message: "Status code of 200!" });
-        }
-      );
+      await pool.query("call RegisterUser(?, ?, ?, ?, ?);", [
+        req.body.username,
+        req.body.password,
+        req.body.name,
+        req.body.surname,
+        req.body.dateOfBirth,
+      ]);
+      res.status(200).json({ message: "Success!" });
     } catch (e) {
       res.status(400).json({ message: e.message });
-      console.log(e.message);
     }
   });
 
@@ -52,7 +46,7 @@ module.exports = function (express, pool, jwt, secret) {
           secret,
           {
             expiresIn: 3600,
-          }
+          },
         );
 
         res.status(200).json({
