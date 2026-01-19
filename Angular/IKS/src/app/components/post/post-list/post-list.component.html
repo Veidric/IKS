@@ -7,26 +7,28 @@
 <div class="frontPageBar">
   <!-- New Post Button -->
   <div>
-    @if(canAddPost) {
-    <button class="greenButton" (click)="openDialog()">New post</button>
+    @if (canAddPost) {
+      <button class="greenButton" (click)="openDialog()">
+        New post <span class="material-symbols-outlined editIcon"> add_ad </span>
+      </button>
     }
   </div>
 
   <!-- Filtering & Sorting -->
   <div class="filterAndSort">
     <!-- Filtering -->
-    @if(route !== 'profile') {
-    <div class="buttonGroup">
-      <button class="iconButton" matTooltip="Filter posts">
-        <span class="material-symbols-outlined"> filter_alt </span>
-      </button>
-      <button (click)="setFilter()" [class.buttonSelected]="filter === ''">Public</button>
-      <button (click)="setFilter('following')" [class.buttonSelected]="filter === 'following'">
-        Following
-      </button>
-    </div>
+    @if (route !== 'profile') {
+      <div class="buttonGroup">
+        <button class="iconButton" matTooltip="Filter posts">
+          <span class="material-symbols-outlined"> filter_alt </span>
+        </button>
+        <button (click)="setFilter()" [class.buttonSelected]="filter === ''">Public</button>
+        <button (click)="setFilter('following')" [class.buttonSelected]="filter === 'following'">
+          Following
+        </button>
+      </div>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
     }
 
     <!-- Sorting -->
@@ -43,10 +45,10 @@
 </div>
 
 <!-- POSTS -->
-@for(post of posts() | sortPosts: sortKey; track post.PostID) {
-<app-post
-  [post]="post"
-  [userRating]="ratingsMap().get(post.PostID) ?? 0"
-  (postUpdated)="refetchPosts()"
-/>
+@for (post of posts() | sortPosts: sortKey; track post.PostID) {
+  <app-post
+    [post]="post"
+    [userRating]="ratingsMap().get(post.PostID) ?? 0"
+    (postUpdated)="refetchPosts()"
+  />
 }

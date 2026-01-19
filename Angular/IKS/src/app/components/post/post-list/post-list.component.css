@@ -43,3 +43,8 @@
 .iconButton span {
   transform: scale(0.8) translateX(1px);
 }
+
+.editIcon {
+  transform: scale(1.3) translateY(1px) translateX(0.35em);
+  margin-right: 0.45em;
+}

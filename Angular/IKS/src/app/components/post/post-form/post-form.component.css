@@ -4,3 +4,8 @@
   user-select: none;
   font-size: 0.9em;
 }
+
+.editIcon {
+  margin-right: 0.4em;
+  transform: scale(1.4) translateX(0.3em) translateY(1px);
+}
