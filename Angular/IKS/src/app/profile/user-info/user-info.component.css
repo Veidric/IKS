@@ -5,6 +5,12 @@
   gap: 1.5em;
 }
 
+@media (max-width: 600px) {
+  .profileInfoSection {
+    flex-direction: column;
+  }
+}
+
 /* PROFILE PICTURE 1st DIV*/
 .profilePicture {
   height: 175px;

@@ -120,6 +120,8 @@ export class UserInfoComponent {
   }
 
   openUsersList(type: string): void {
+    if (type === 'followers' && this.followersNumber() === 0) return;
+    if (type === 'following' && this.followingNumber() === 0) return;
     this.dialog.open(FollowersList, {
       data: type === 'followers' ? this.followers() : this.following(),
       autoFocus: false,

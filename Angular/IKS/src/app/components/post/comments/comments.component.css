@@ -44,3 +44,7 @@
   font-style: italic;
   margin: 0.5em 0;
 }
+
+.editIcon {
+  transform: scale(1.5) translateX(1px) translateY(0.5px);
+}

@@ -3,10 +3,10 @@
     <div class="postTopBarLeft">
       <a [routerLink]="['/profile', post.UserID]" class="postLink">{{ post.Username }}</a>
       <div [style.margin-left]="post.Username ? '0.5em' : null">{{ post.Visibility }}</div>
-      @if(auth.getUser()?.id === post.UserID){
-      <div class="postIcon transition" (click)="editPost()">
-        <span class="material-symbols-outlined editIcon"> edit </span>
-      </div>
+      @if (auth.getUser()?.id === post.UserID) {
+        <div class="postIcon transition" (click)="editPost()">
+          <span class="material-symbols-outlined editIcon"> edit </span>
+        </div>
       }
     </div>
 
@@ -28,7 +28,7 @@
         </span>
       </div>
 
-      <div>{{ postRating }}</div>
+      <div style="font-weight: bold">{{ postRating }}</div>
 
       <div class="postIcon transition" (click)="pressDislike()">
         <span
@@ -45,7 +45,7 @@
         <div class="postIcon transition" (click)="openComments()">
           <span class="material-symbols-outlined"> comment </span>
         </div>
-        <div>{{ numberOfComments() }}</div>
+        <div style="font-weight: bold">{{ numberOfComments() }}</div>
       </div>
     </div>
   </div>

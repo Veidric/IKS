@@ -1,13 +1,15 @@
 <div class="modal">
   <div class="comments">
-    @if(!comments().length) {
-    <div style="color: var(--text-darker)">No comments</div>
-    } @else { @for(comment of comments(); let i = $index; track i) {
-    <div>
-      <div class="postLink" (click)="visitProfile(comment.id)">{{ comment.Username }}</div>
-      <div class="commentContent">{{ comment.Content }}</div>
-    </div>
-    } }
+    @if (!comments().length) {
+      <div style="color: var(--text-darker)">No comments</div>
+    } @else {
+      @for (comment of comments(); let i = $index; track i) {
+        <div>
+          <div class="postLink" (click)="visitProfile(comment.id)">{{ comment.Username }}</div>
+          <div class="commentContent">{{ comment.Content }}</div>
+        </div>
+      }
+    }
   </div>
   <div class="commentForm">
     <form [formGroup]="commentGroup" (ngSubmit)="submitComment()">
@@ -15,7 +17,9 @@
         <input type="text" formControlName="content" placeholder="Comment" />
         <span class="inputErrorMessage">{{ errorMessage('content') }}</span>
       </div>
-      <button type="submit" class="greenButton">Submit</button>
+      <button type="submit" class="greenButton">
+        <span class="material-symbols-outlined editIcon"> send </span>
+      </button>
     </form>
   </div>
 </div>

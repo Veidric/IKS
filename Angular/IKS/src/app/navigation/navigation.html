@@ -2,7 +2,8 @@
   <div>
     <nav>
       <a [routerLink]="['/feed']" [class]="{ activePage: pathname.includes('feed') }"
-        ><span class="material-symbols-outlined"> newsmode </span>Feed</a
+        ><span class="material-symbols-outlined icon" style="transform: scale(1.1)"> newsmode </span
+        >Feed</a
       >
 
       <a (click)="visitProfile()" [class]="{ activePage: pathname.includes('profile') }"
