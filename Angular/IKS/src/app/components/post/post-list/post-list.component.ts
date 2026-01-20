@@ -1,14 +1,13 @@
-import { AuthService } from './../../../services/auth.service';
-import { Component, inject, Input, OnInit, signal, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, Input, signal } from '@angular/core';
 
-import { PostsService } from '../../../services/posts.service';
-import { PostComponent } from '../post/post.component';
-import { Post } from '../../../shared/classes/post';
-import { SortPostsPipe } from '../../../pipes/sort-posts-pipe';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SortPostsPipe } from '../../../pipes/sort-posts-pipe';
+import { PostsService } from '../../../services/posts.service';
+import { Post } from '../../../shared/classes/post';
 import { PostFormComponent } from '../post-form/post-form.component';
+import { PostComponent } from '../post/post.component';
 
 @Component({
   selector: 'app-posts-list',
@@ -47,7 +46,11 @@ export class PostsListComponent {
 
   loadPosts() {
     this.postsService.fetchPosts(this.route, this.userId).subscribe((res) => {
-      this.posts.set(res);
+      if (this.canAddPost) {
+        this.posts.set(res);
+      } else {
+        this.posts.set(res.filter((p: Post) => p.Visibility !== 'private'));
+      }
     });
   }
   loadPostRatings() {
