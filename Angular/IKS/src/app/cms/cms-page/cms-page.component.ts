@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { CmsService } from '../../services/cms.service';
 import { User } from '../../shared/classes/user';
 
-// Import your new Pipes
+// Pipes
 import { FilterUserPipe } from '../../pipes/filter-user.pipe';
 import { PaginateUserPipe } from '../../pipes/paginate-user.pipe';
 import { SortUserPipe } from '../../pipes/sort-user.pipe';
@@ -12,12 +13,18 @@ import { SortUserPipe } from '../../pipes/sort-user.pipe';
 @Component({
   selector: 'app-cms-page',
   standalone: true,
-  // Add the pipes to the imports array
-  imports: [CommonModule, FormsModule, FilterUserPipe, SortUserPipe, PaginateUserPipe],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FilterUserPipe,
+    SortUserPipe,
+    PaginateUserPipe
+  ],
   templateUrl: './cms-page.component.html',
   styleUrls: ['./cms-page.component.css'],
 })
 export class CmsPageComponent implements OnInit {
+
   users: User[] = [];
   isLoading = true;
 
@@ -35,10 +42,12 @@ export class CmsPageComponent implements OnInit {
   // Modal State
   isModalOpen = false;
   editForm: User = new User();
+  profileImageSafeUrl: SafeUrl | null = null;
 
   constructor(
     private cmsService: CmsService,
     private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -65,8 +74,6 @@ export class CmsPageComponent implements OnInit {
     });
   }
 
-  // --- ACTIONS ---
-
   sort(column: string) {
     if (this.sortColumn === column) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -81,7 +88,6 @@ export class CmsPageComponent implements OnInit {
     this.currentPage = 1;
   }
 
-  // Simple Pagination Logic for Buttons
   nextPage(totalItems: number) {
     const totalPages = Math.ceil(totalItems / this.itemsPerPage);
     if (this.currentPage < totalPages) this.currentPage++;
@@ -102,12 +108,44 @@ export class CmsPageComponent implements OnInit {
     });
   }
 
+
   openEditModal(user: User) {
     this.editForm = { ...user };
+
     if (this.editForm.dateOfBirth) {
       this.editForm.dateOfBirth = this.formatDateForInput(this.editForm.dateOfBirth);
     }
+    this.loadUserImage(this.editForm.id);
     this.isModalOpen = true;
+  }
+
+  loadUserImage(userId: number) {
+    this.profileImageSafeUrl = null;
+
+    this.cmsService.getUserImage(userId).subscribe({
+      next: (blob) => {
+        const objectUrl = URL.createObjectURL(blob);
+        this.profileImageSafeUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load image', err);
+    
+      }
+    });
+  }
+
+  deleteProfileImage() {
+    if (!this.editForm.id) return;
+    if (!confirm('Are you sure you want to remove the profile picture?')) return;
+
+    this.cmsService.deleteUserImage(this.editForm.id).subscribe({
+      next: () => {
+        alert('Image removed successfully!');
+        this.loadUserImage(this.editForm.id);
+      },
+      error: (err) => alert('Failed to delete image: ' + (err.error?.message || 'Unknown error'))
+    });
   }
 
   private formatDateForInput(dateString: string): string {
@@ -119,6 +157,7 @@ export class CmsPageComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
     this.editForm = new User();
+    this.profileImageSafeUrl = null;
   }
 
   saveUser() {
@@ -129,19 +168,21 @@ export class CmsPageComponent implements OnInit {
       Surname: this.editForm.surname,
       DateOfBirth: this.editForm.dateOfBirth,
       IsAdmin: this.editForm.isAdmin,
+      Password: this.editForm.password || ''
     };
 
     this.cmsService.updateUser(payload as any).subscribe({
       next: () => {
-        const index = this.users.findIndex((u) => u.id === this.editForm.id);
-        if (index !== -1) {
-          this.users[index] = { ...this.editForm };
-        }
+        const updatedUsers = this.users.map(u =>
+          u.id === this.editForm.id ? { ...u, ...this.editForm } : u
+        );
+        this.users = [...updatedUsers];
+
         alert('User updated successfully!');
         this.closeModal();
         this.cdr.detectChanges();
       },
-      error: (err) => alert(err.error?.message || 'Update failed'),
+      error: (err) => alert(err.error?.message || 'Update failed')
     });
   }
 }

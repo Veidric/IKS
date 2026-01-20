@@ -35,35 +35,26 @@
     </div>
   </div>
 
-  @if (users | filterUser:searchTerm:selectedLetter | sortUser:sortColumn:sortDirection; as
-  processedUsers) {
+  @if (users | filterUser:searchTerm:selectedLetter | sortUser:sortColumn:sortDirection; as processedUsers) {
 
   <table class="cms-table">
     <thead>
       <tr>
         <th (click)="sort('id')" class="sortable">
           ID
-          <span class="sort-icon">{{
-            sortColumn === 'id' ? (sortDirection === 'asc' ? '▲' : '▼') : ''
-          }}</span>
+          <span class="sort-icon">{{ sortColumn === 'id' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
         </th>
-        <th (click)="sort('Name')" class="sortable">
+        <th (click)="sort('name')" class="sortable">
           Full Name
-          <span class="sort-icon">{{
-            sortColumn === 'Name' ? (sortDirection === 'asc' ? '▲' : '▼') : ''
-          }}</span>
+          <span class="sort-icon">{{ sortColumn === 'name' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
         </th>
-        <th (click)="sort('Username')" class="sortable">
+        <th (click)="sort('username')" class="sortable">
           Username
-          <span class="sort-icon">{{
-            sortColumn === 'Username' ? (sortDirection === 'asc' ? '▲' : '▼') : ''
-          }}</span>
+          <span class="sort-icon">{{ sortColumn === 'username' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
         </th>
-        <th (click)="sort('IsAdmin')" class="sortable">
+        <th (click)="sort('isAdmin')" class="sortable">
           Role
-          <span class="sort-icon">{{
-            sortColumn === 'IsAdmin' ? (sortDirection === 'asc' ? '▲' : '▼') : ''
-          }}</span>
+          <span class="sort-icon">{{ sortColumn === 'isAdmin' ? (sortDirection === 'asc' ? '▲' : '▼') : '' }}</span>
         </th>
         <th>Actions</th>
       </tr>
@@ -112,37 +103,78 @@
 
 @if(isModalOpen) {
 <div class="modal-overlay">
-  <div class="modal-content">
+  <div class="modal form formModal">
+    
     <h2>Edit User</h2>
-    <div class="form-group">
-      <label>Username</label>
-      <input [(ngModel)]="editForm.username" placeholder="Username" />
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Name</label>
-        <input [(ngModel)]="editForm.name" placeholder="Name" />
+
+    <div class="profile-image-section">
+      <div class="image-container">
+        <img [src]="profileImageSafeUrl" alt="Loading..." class="profile-preview" *ngIf="profileImageSafeUrl">
+        <div class="no-image" *ngIf="!profileImageSafeUrl">No Image</div>
       </div>
-      <div class="form-group">
-        <label>Surname</label>
-        <input [(ngModel)]="editForm.surname" placeholder="Surname" />
+      
+      <div class="image-actions">
+        <button type="button" class="btn-remove-img" (click)="deleteProfileImage()">
+          Remove Image
+        </button>
+        <p class="image-hint">Removes custom photo and reverts to default.</p>
       </div>
     </div>
-    <div class="form-group">
-      <label>Date of Birth</label>
-      <input type="date" [(ngModel)]="editForm.dateOfBirth" />
-    </div>
-    <div class="form-group">
-      <label>Role</label>
-      <select [(ngModel)]="editForm.isAdmin">
-        <option [ngValue]="0">User</option>
-        <option [ngValue]="1">Admin</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" (click)="closeModal()">Cancel</button>
-      <button class="btn-save" (click)="saveUser()">Save Changes</button>
-    </div>
+
+    <form (ngSubmit)="saveUser()"> <div>
+        <div class="label">
+          <label for="username">Username</label>
+        </div>
+        <div class="inputWrapper">
+          <input id="username" name="username" [(ngModel)]="editForm.username" placeholder="Username" />
+        </div>
+      </div>
+
+      <div>
+        <div class="label">
+          <label for="name">Name</label>
+        </div>
+        <div class="inputWrapper">
+          <input id="name" name="name" [(ngModel)]="editForm.name" placeholder="Name" />
+        </div>
+      </div>
+
+      <div>
+        <div class="label">
+          <label for="surname">Surname</label>
+        </div>
+        <div class="inputWrapper">
+          <input id="surname" name="surname" [(ngModel)]="editForm.surname" placeholder="Surname" />
+        </div>
+      </div>
+
+      <div>
+        <div class="label">
+          <label for="dateOfBirth">Date of Birth</label>
+        </div>
+        <div class="inputWrapper">
+          <input type="date" id="dateOfBirth" name="dateOfBirth" [(ngModel)]="editForm.dateOfBirth" />
+        </div>
+      </div>
+
+      <div>
+        <div class="label">
+          <label for="role">Role</label>
+        </div>
+        <div class="inputWrapper">
+          <select id="role" name="role" [(ngModel)]="editForm.isAdmin">
+            <option [ngValue]="0">User</option>
+            <option [ngValue]="1">Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flexHorizontal" style="margin-top: 1em;">
+        <button type="button" class="grayButton" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="greenButton submitButton">Save Changes</button>
+      </div>
+
+    </form>
   </div>
 </div>
 }
